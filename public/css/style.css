@@ -1,0 +1,349 @@
+
+
+body {
+    margin: 0;
+    background: #e3e2e2;
+    padding-bottom: 80px;
+}
+
+/* ------------------------------------------------- Admin Panel --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+.side-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 270px;
+    color: #fff;
+    padding: 20px 20px 0 20px; /* Bottom padding-a text block-uku mathiyachu */
+    transition: width 0.3s ease;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column; /* Content-a vertical-a break panna */
+    overflow: hidden; /* Sidebar full-a scroll aagatha padi block panniyachu */
+}
+
+/* 1. Sidebar menu list mattum scroll aaguvatharkaana main fix */
+.side-bar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto; /* List-ku mattum scroll enable panniyachu */
+    flex-grow: 1; /* Meedhi irukara full space-aiyum list yeduthukum */
+    padding-bottom: 20px; /* Keel mudiyum pothu konjam gap irikka */
+
+    /* Scrollbar icon-a hide panna */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
+}
+
+/* Chrome, Safari-la scrollbar hide panna */
+.side-bar ul::-webkit-scrollbar {
+    display: none;
+}
+
+.side-bar.collapsed {
+    width: 80px;
+}
+
+.side-bar.collapsed .sidebar-text {
+    display: none;
+}
+
+.side-bar ul li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+
+.side-bar ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.side-bar ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.side-bar ul li.active a {
+    background-color: #ffffff;
+    color: var(--bs-primary);
+}
+
+.side-bar.collapsed ul li a {
+    justify-content: center;
+    padding: 15px 0;
+    height: 55px;
+}
+
+.side-bar ul li a i {
+    font-size: 18px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.sidebar-title {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.sidebar-title .short-text {
+    display: none;
+}
+
+.side-bar.collapsed .sidebar-title .full-text {
+    display: none;
+}
+
+.side-bar.collapsed .sidebar-title .short-text {
+    display: inline-block;
+    font-size: 28px;
+    text-align: center;
+}
+
+.side-bar.collapsed .sidebar-title {
+    text-align: center;
+}
+
+
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 270px;
+    right: 0;
+    background: #fff;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.header.collapsed {
+    left: 80px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 270px;
+    right: 0;
+    height: 80px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    padding: 25px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+
+}
+
+.footer.collapsed {
+    left: 80px;
+}
+
+.main-container {
+    margin-left: 280px;
+    padding: 110px 20px 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.main-container.collapsed {
+    margin-left: 80px;
+}
+
+
+/* ------------------------------------------------- Adjustment of Input, select, textarea --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+.form-control,
+.form-select {
+    height: 45px;
+}
+
+.form-control,
+.form-select,
+textarea {
+    border: 1px solid rgb(190, 188, 188)
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 80px;
+}
+
+.form-field small {
+    height: 10px;
+    display: block;
+    font-size: 14px;
+    color: red;
+}
+
+.text-errors {
+    font-size: 13px;
+}
+
+
+
+/* ------------------------------------------------- Datepicker Adjustment --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+.datepicker {
+    border-radius: 12px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    font-family: 'Poppins', sans-serif;
+}
+
+.datepicker .datepicker-switch {
+    font-weight: 600;
+    color: #333;
+}
+
+.datepicker .prev,
+.datepicker .next {
+    color: #e62a49;
+    font-size: 18px;
+}
+
+.datepicker table tr td,
+.datepicker table tr th {
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.datepicker table tr td:hover {
+    background: #f1f1f1;
+    cursor: pointer;
+}
+
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover {
+    background: #9b87f2;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.datepicker table tr td.today {
+    background: #ffe5ea;
+    border-radius: 8px;
+}
+
+.datepicker table tr td.disabled {
+    color: #ccc !important;
+    cursor: not-allowed;
+}
+
+.datepicker .month,
+.datepicker .year {
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.datepicker .month:hover,
+.datepicker .year:hover {
+    background: #f1f1f1;
+}
+
+.datepicker .month.active,
+.datepicker .year.active {
+    background: #9b87f2;
+    color: #fff;
+}
+
+
+/* ------------------------------------------------- DataTable--------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+#datatable {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 14px;
+    background: #ffffff;
+    margin-top: 12px;
+
+}
+
+#datatable thead th {
+    background: #fff;
+    padding: 10px 12px;
+    border: 1px solid #5a5f68;
+    white-space: nowrap;
+}
+
+#datatable tbody td {
+    padding: 5px 12px;
+    border: 1px solid #5a5f68;
+    vertical-align: middle;
+}
+
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 12px;
+}
+
+.dataTables_wrapper .row:first-child {
+    margin-bottom: 10px;
+}
+
+
+/* ------------------------------------------------- select2 --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+.select2-container .select2-selection--single {
+    height: 45px !important;
+    padding: 6px 12px;
+    border: 1px solid #ced4da !important;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #212529;
+    line-height: 38px;
+    padding-left: 2px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+    right: 8px;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    max-height: 220px;
+}
+
+.select2-results__option--highlighted {
+    background-color: #0d6efd !important;
+    color: white !important;
+}
+
+.select2-container--open .select2-selection--single {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .25);
+}
+
+.select2-container .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d;
+}
+
+.select2-container--default .select2-selection--single:focus {
+    outline: none !important;
+}

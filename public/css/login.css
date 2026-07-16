@@ -1,0 +1,132 @@
+:root {
+     --primary-color: #0d6efd;
+     --primary-hover: #0b5ed7;
+     --focus-ring: rgba(13, 110, 253, 0.25);
+     --dark-border: #495057; /* இன்னும் கொஞ்சம் டார்க்கான பார்டர் */
+}
+
+/* கண்டெய்னர் அகலம் மற்றும் உயரம் */
+.login-card-row {
+    max-width: 1000px !important;
+    min-height: 520px;
+}
+
+/* --- இன்புட் பாக்ஸ் ஸ்டைல் --- */
+.form-control {
+    border: 1.5px solid var(--dark-border) !important;
+    color: #212529 !important;
+    font-size: 1rem !important;
+    border-radius: 8px !important;
+    background-color: #fff !important;
+}
+
+.form-control:focus {
+     border-color: var(--primary-color) !important;
+     box-shadow: 0 0 0 0.25rem var(--focus-ring) !important;
+     outline: 0;
+}
+
+.form-control[readonly] {
+    background-color: #e9ecef !important;
+    border-color: #adb5bd !important;
+}
+
+/* --- Floating Labels & Icon Container --- */
+.input-group-custom {
+    position: relative;
+}
+
+/* Floating Input-க்கு தேவையான சரியான உயரமும் பேடிங்கும் */
+.form-floating > .form-control {
+    padding-top: 1.625rem !important;
+    padding-bottom: 0.625rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 4rem !important; /* கஸ்டம் ஐகான் மற்றும் வேலிடேஷன் ஐகானுக்காக அதிக இடம் */
+    height: 3.8rem !important;
+}
+
+/* லேபல் ஆரம்பத்தில் இருக்கும் நிலை */
+.form-floating > label {
+    padding: 1.1rem 0.75rem !important;
+    color: #495057 !important;
+    font-weight: 500;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* டைப் பண்ணும்போதோ அல்லது கிளிக் செய்யும்போதோ லேபல் கச்சிதமாக மேலே நகர */
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--primary-color) !important;
+    opacity: 0.85;
+    transform: scale(0.85) translateY(-0.85rem) translateX(0.15rem) !important;
+}
+
+/* --- வலது கோடி ஐகான்களின் பொதுவான ஸ்டைல் --- */
+.input-icon-end {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    color: #495057;
+    font-size: 1.25rem;
+}
+
+.toggle-password {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.toggle-password:hover {
+    color: var(--primary-color);
+}
+
+/* --- பட்டன் & லிங்க்ஸ் ஸ்டைல் --- */
+.btn-custom-primary {
+     background-color: var(--primary-color) !important;
+     border-color: var(--primary-color) !important;
+     color: #fff !important;
+     padding: 0.75rem 1rem !important;
+     font-size: 1rem !important;
+     font-weight: 500;
+     border-radius: 8px !important;
+     transition: all 0.2s ease-in-out;
+}
+.btn-custom-primary:hover {
+     background-color: var(--primary-hover) !important;
+     border-color: var(--primary-hover) !important;
+}
+.forgot-link, .back-link {
+     color: var(--primary-color);
+     transition: color 0.2s ease-in-out;
+}
+.forgot-link:hover, .back-link:hover {
+     color: var(--primary-hover) !important;
+     text-decoration: underline !important;
+}
+
+/* --- பழைய உலகளாவிய வேலிடேஷன் கோடிற்கு பதிலாக இதை போடவும் --- */
+
+/* 1. சாதாரண இன்புட்கள் (Department போன்ற ஐகான் இல்லாத பாக்ஸ்கள்) */
+/* இதில் வேலிடேஷன் ஐகான் எப்போதுபோல கடைசி கோடியில் (Default End) காட்டும் */
+.needs-validation .form-control:invalid,
+.was-validated .form-control:invalid {
+    background-position: right 0.75rem center !important; /* கடைசி கோடியில் இருக்கும் */
+}
+.needs-validation .form-control:valid,
+.was-validated .form-control:valid {
+    background-position: right 0.75rem center !important;
+}
+
+/* 2. ஐகான் இருக்கும் இன்புட்கள் (Login / Password போன்ற கஸ்டம் ஐகான் பாக்ஸ்கள்) */
+/* .input-group-custom குள்ள இருக்குற இன்புட்களுக்கு மட்டும் ஐகானை 3.5rem தள்ளி வைக்கிறோம் */
+.input-group-custom.needs-validation .form-control:invalid,
+.input-group-custom .form-control:invalid,
+.input-group-custom.was-validated .form-control:invalid {
+    background-position: right 3.5rem center !important; /* கஸ்டம் ஐகானை மறைக்காமல் தள்ளி இருக்கும் */
+}
+
+.input-group-custom.needs-validation .form-control:valid,
+.input-group-custom .form-control:valid,
+.input-group-custom.was-validated .form-control:valid {
+    background-position: right 3.5rem center !important;
+}
