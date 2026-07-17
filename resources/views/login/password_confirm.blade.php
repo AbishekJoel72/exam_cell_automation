@@ -34,12 +34,7 @@
                             <small class="text-danger"></small>
                         </div>
 
-                        <div class="input-group-custom form-floating mb-4">
-                            <input type="password" class="form-control password-input" id="password_confirmation" name="password_confirmation" required placeholder="Confirm New Password">
-                            <label for="password_confirmation">Confirm New Password</label>
-                            <i class="bi bi-eye-slash-fill input-icon-end toggle-password"></i>
-                            <small class="text-danger"></small>
-                        </div>
+                        
 
                         <button type="submit" class="btn btn-custom-primary w-100">Update Password</button>
                     </form>

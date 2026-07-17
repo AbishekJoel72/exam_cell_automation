@@ -22,8 +22,8 @@
                         <input type="hidden" name="login_type" value="true">
 
                         <div class="input-group-custom form-floating mb-3">
-                            <input type="text" class="form-control" id="username" name="username" required placeholder="Email / Registration No">
-                            <label for="username">Email / Registration No</label>
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="Username | Email | Registration No">
+                            <label for="username">Username | Email | Registration No</label>
                             <i class="bi bi-person-fill input-icon-end"></i>
                             <small class="text-danger"></small>
                         </div>

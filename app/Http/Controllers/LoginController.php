@@ -19,37 +19,50 @@ class LoginController extends Controller
                         'password' => 'required',
                     ]);
                     if ($validate) {
-                        $user = Registration::where('email', $request->username)->first();
+                        $user = Registration::where(function ($query) use ($request) {
+                            $query->where('email', $request->username)
+                                ->orWhere('username', $request->username)
+                                ->orWhere('phone', $request->username);
+                        })->first();
+
                         if ($user && Hash::check($request->password, $user->password)) {
                             $request->session()->put([
-                                'user_id' => $user->id,
-                                'user_name' => $user->name,
-                                'user_email' => $user->email,
-                                'user_phone' => $user->phone,
-                                'user_role' => $user->role,
+                                'id' => $user->id,
+                                'username' => $user->username,
+                                'name' => $user->name,
+                                'email' => $user->email,
+                                'phone' => $user->phone,
+                                'role' => $user->role,
                             ]);
+                            if ($request->has('remember')) {
+                                session()->put('remember_user', true);
+                            }
                             if ($user->role == 'admin') {
                                 session()->flash('success', 'Login successful as Admin.');
+
                                 return redirect()->route('dashboard');
                             } elseif ($user->role == 'faculty') {
                                 session()->flash('success', 'Login successful as Faculty.');
+
                                 return redirect()->route('dashboard');
                             } else {
                                 session()->flash('success', 'Login successful as Student.');
+
                                 return redirect()->route('dashboard');
                             }
-                        }else {
+                        } else {
                             session()->flash('error', 'Enter the field correctly');
+
                             return redirect()->back();
                         }
                     }
 
                 } catch (\Exception $e) {
-                      session()->flash('error', getMessage($e));
+                    session()->flash('error', $e->getMessage());
+
                     return route()->back();
                 }
             }
-
 
         }
 
@@ -70,6 +83,7 @@ class LoginController extends Controller
     {
         $request->session()->flush();
         session()->flash('success', 'Logged Out Successfully!');
+
         return redirect()->route('login');
     }
 }

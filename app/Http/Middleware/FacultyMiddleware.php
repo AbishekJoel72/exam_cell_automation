@@ -15,7 +15,7 @@ class FacultyMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-                if (session('user_role') == 'faculty') {
+                if (session('role') == 'faculty') {
 
             return $next($request);
 

@@ -8,17 +8,16 @@ class Registration extends Model
 {
     protected $table = 'registration';
     protected $fillable = [
+        'username',
         'name',
         'email',
         'phone',
         'password',
-        'ConfirmPassword',
         'role',
         'status',
     ];
     protected $hidden = [
         'password',
-        'ConfirmPassword',
     ];
-    
+
 }

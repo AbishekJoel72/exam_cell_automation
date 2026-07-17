@@ -15,7 +15,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (session('user_role') == 'admin') {
+        if (session('role') == 'admin') {
 
             return $next($request);
 

@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable();
+            $table->string('phone')->unique()->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'faculty', 'student'])->default('student');
             $table->enum('status', ['1', '0'])->default('1');
-            $table->string('remember_token')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

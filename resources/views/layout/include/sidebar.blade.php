@@ -13,10 +13,10 @@
 
     <ul class="list-unstyled">
 
-        @if (session()->has('user_role'))
+        @if (session()->has('role'))
 
             {{-- 1. ADMIN MENU --}}
-            @if (session('user_role') == 'admin')
+            @if (session('role') == 'admin')
                 <li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
                     <a href="{{ route('dashboard') }}">
                         <i class="fa-solid fa-gauge me-2"></i>
@@ -97,7 +97,7 @@
                 </li>
 
                 {{-- 2. FACULTY MENU --}}
-            @elseif(session('user_role') == 'faculty')
+            @elseif(session('role') == 'faculty')
                 <li>
                     <a href="#">
                         <i class="fa-solid fa-eye me-2"></i>

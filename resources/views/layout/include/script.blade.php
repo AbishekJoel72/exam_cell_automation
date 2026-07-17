@@ -83,7 +83,7 @@ function showError(input, message) {
         error.innerText = message;
         error.style.display = "block";
         error.style.marginTop = "5px";
-        error.style.color = "#dc3545"; // ரெட் கலர் உறுதி செய்ய
+        error.style.color = "#dc3545"; 
     }
 }
 

@@ -15,7 +15,7 @@ class StudentMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (session('user_role') == 'student') {
+        if (session('role') == 'student') {
 
             return $next($request);
 
