@@ -1,23 +1,27 @@
-<header id="mainHeader" class="header d-flex  align-items-center">
+<header id="mainHeader" class="header d-flex align-items-center">
     <div class="header-left d-flex align-items-center gap-3">
-        <i id="menuOpen" class="fa-solid fa-bars-staggered fs-5 text-primary" ></i>
+        <i id="menuOpen" class="fa-solid fa-bars-staggered fs-5 text-primary"></i>
         <i id="menuClose" class="fa-solid fa-arrow-right fs-5 d-none text-primary"></i>
 
-
-       <input type="search" class="form-control search-input" placeholder="Search...">
-
+        <input type="search" class="form-control search-input" placeholder="Search...">
     </div>
+
     <nav class="ms-auto bg-light text-primary p-3">
         @php
             use App\Models\Registration;
             $reg = Registration::where('role', 'admin')->first();
         @endphp
+
         <div class="dropdown">
-            <div class=" d-flex flex-column align-items-start" id="adminDropdown" data-bs-toggle="dropdown"
-                aria-expanded="false" style="cursor:pointer;">
+            <div class="d-flex flex-column align-items-start" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
                 @if (isset($reg))
-                    <span><i class="fa fa-user"></i> {{ $reg->name }}</span>
-                    <span><i class="fa fa-envelope"></i> {{ $reg->email }}</span>
+                    @if ($reg->role == 'admin')
+                        <span><i class="fa fa-user"></i> {{ $reg->name }}</span>
+                        <span><i class="fa fa-envelope"></i> {{ $reg->email }}</span>
+                    @else
+                        <span><i class="fa fa-user-tag"></i> {{ $reg->username }}</span>
+                        <span><i class="fa fa-user"></i> {{ $reg->name }}</span>
+                    @endif
                 @endif
             </div>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">

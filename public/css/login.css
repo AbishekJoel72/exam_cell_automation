@@ -4,6 +4,9 @@
      --focus-ring: rgba(13, 110, 253, 0.25);
      --dark-border: #495057;
 }
+body{
+    background-color: var(--primary-color);
+}
 
 .login-card-row {
     max-width: 1000px !important;

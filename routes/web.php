@@ -30,6 +30,7 @@ Route::any('/logout',[LoginController::class,'logout'])->name('logout');
 Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
     Route::any('dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
     Route::any('department',[DepartmentController::class,'department'])->name('department');
+    Route::any('excel_upload',[DepartmentController::class,'excelUpload'])->name('excel_upload');
     Route::any('course',[CourseController::class,'course'])->name('course');
     Route::any('subject',[SubjectsController::class,'subject'])->name('subject');
     Route::any('classroom',[ClassroomController::class,'classroom'])->name('classroom');
