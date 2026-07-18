@@ -73,21 +73,25 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <label for="department_code" class="form-label mb-1">
-                                Department Code
-                            </label>
+                        <div class="col-md-6 mb-3">
+                            <label for="department_code" class="form-label mb-1"> Department Code </label>
+                            <select name="department_code" id="department_code" class="form-select ">
+                                <option value="">All Department Code</option>
+                                @foreach ($departmentcode as $code)
+                                    <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                @endforeach
+                            </select>
 
-                            <input type="text" name="department_code" id="department_code" class="form-control"
-                                placeholder="Enter Department Code" autocomplete="off">
                         </div>
-                        <div class="col-md-4">
-                            <label for="department_name" class="form-label mb-1">
-                                Department Name
-                            </label>
+                        <div class="col-md-6 mb-3">
+                            <label for="department_name" class="form-label mb-1"> Department Name </label>
+                            <select name="department_name" id="department_name" class="form-select ">
+                                <option value="">All Department Name</option>
+                                @foreach ($departmentname as $code)
+                                    <option value="{{ $code->id }}">{{ $code->department_name }}</option>
+                                @endforeach
+                            </select>
 
-                            <input type="text" name="department_name" id="department_name" class="form-control"
-                                placeholder="Enter Department Name" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -159,10 +163,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <form action="{{ route('department') }}" method="POST" autocomplete="off">
+                    <form action="{{ route('department') }}" method="POST" autocomplete="off" class="needs-validation"
+                        novalidate>
                         @csrf
                         <input type="hidden" name="add_department" value="true">
-                        <input type="hidden" id="edit_department_id" name="id">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
@@ -180,10 +184,99 @@
 
                         <div class="modal-footer d-flex justify-content-center">
 
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="fa-solid fa-paper-plane me-2"></i> Submit
-                                </button>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-2"></i> Submit
+                            </button>
 
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Editmodel" tabindex="-1" aria-labelledby="EditmodelLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Department</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('department') }}" method="POST" autocomplete="off" class="needs-validation"
+                        novalidate>
+                        @csrf
+                        <input type="hidden" name="edit_department" value="true">
+                        <input type="hidden" id="edit_department_id" name="id">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="department_code" class="form-label">Department Code</label>
+                                    <input type="text" class="form-control" id="edit_department_code"
+                                        name="department_code" placeholder="Enter department code" required>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="department_name" class="form-label">Department Name</label>
+                                    <input type="text" class="form-control" id="edit_department_name"
+                                        name="department_name" placeholder="Enter department name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer d-flex justify-content-center">
+
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-2"></i> Update
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Editstatusmodel" tabindex="-1" aria-labelledby="EditstatusmodelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Status</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('department') }}" method="POST" autocomplete="off" class="needs-validation"
+                        novalidate>
+                        @csrf
+                        <input type="hidden" name="edit_status" value="true">
+                        <input type="hidden" id="edit_status_id" name="id">
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label d-block fw-bold">Status</label>
+
+                                    <!-- Active Radio Button -->
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input type="radio" class="form-check-input" id="edit_active" value="1"
+                                            name="status">
+                                        <label for="edit_active" class="form-check-label ">Active</label>
+                                    </div>
+
+                                    <!-- Inactive Radio Button -->
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input type="radio" class="form-check-input" id="edit_inactive" value="0"
+                                            name="status">
+                                        <label for="edit_inactive" class="form-check-label">In Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-2"></i> Update
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -213,28 +306,38 @@
         // DataTable
         $(document).ready(function() {
 
-            $('#datatable').DataTable({
+            var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('department') }}",
+                ajax: {
+                    url: "{{ route('department') }}",
+                    data: function(d) {
+                        d.department_code = $('#department_code').val();
+                        d.department_name = $('#department_name').val();
+                    }
+                },
 
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        className: 'text-center',
                     },
                     {
                         data: 'department_code',
-                        name: 'department_code'
+                        name: 'department_code',
+                        className: 'text-center',
                     },
                     {
                         data: 'department_name',
-                        name: 'department_name'
+                        name: 'department_name',
+                        className: 'text-center',
                     },
                     {
                         data: 'status',
                         name: 'status',
+                        className: 'text-center',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
@@ -256,6 +359,16 @@
                     }
                 ]
             });
+            $('#filterBtn').click(function(e) {
+                e.preventDefault();
+                table.ajax.reload();
+            });
+
+            $('#resetBtn').click(function() {
+                $('#department_code').val('');
+                $('#department_name').val('');
+                table.ajax.reload();
+            });
 
         });
 
@@ -272,13 +385,77 @@
                 success: function(response) {
 
                     $('#edit_department_id').val(response.id);
-                    $('#add_department_code').val(response.department_code);
-                    $('#add_department_name').val(response.department_name);
-                    $('#Addmodel').modal('show');
+                    $('#edit_department_code').val(response.department_code);
+                    $('#edit_department_name').val(response.department_name);
+                    $('#Editmodel').modal('show');
                 },
                 error: function() {
                     console.log(xhr.responseText);
                 }
+            });
+
+        });
+
+        $(document).on('click', '.editStatusRow', function() {
+            let id = $(this).data('id');
+            $.ajax({
+                url: '{{ route('department') }}',
+                type: 'GET',
+                data: {
+                    id: id,
+                    get_status: true
+                },
+                dataType: 'json',
+                success: function(response) {
+
+                    $('#edit_status_id').val(response.id);
+                    if (response.status == 1) {
+                        $('#edit_active').prop('checked', true);
+                    } else {
+                        $('#edit_inactive').prop('checked', true);
+                    }
+
+                    $('#Editstatusmodel').modal('show');
+                },
+                error: function() {
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
+
+        $(document).on('click', '.deleteRow', function() {
+            let id = $(this).data('id');
+            showConfirm(messages.delete_confirm, function() {
+                $.ajax({
+                    url: '{{ route('department') }}',
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        get_delete: true
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#modalMessage').text("Delete Successfully");
+                        var modal = new bootstrap.Modal(document
+                            .getElementById(
+                                'sessionModal'));
+                        modal.show();
+                        $('#sessionModal').on('hidden.bs.modal',
+                            function() {
+                                $('#datatable').DataTable().ajax
+                                    .reload();
+                            });
+                    },
+                    error: function() {
+                        $("#modalMessage").text(
+                            "Something went wrong!");
+                        var modal = new bootstrap.Modal(document
+                            .getElementById(
+                                'sessionModal'));
+                        modal.show();
+                    }
+                });
             });
 
         });

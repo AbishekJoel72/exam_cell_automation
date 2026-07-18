@@ -26,25 +26,97 @@ class DepartmentController extends Controller
                         $department->department_code = $request->department_code;
                         $department->save();
                         session()->flash('success', 'Department added successfully.');
+
                         return redirect()->route('department');
                     }
                 } catch (\Exception $e) {
                     session()->flash('error', $e->getMessage());
+
+                    return redirect()->back();
+                }
+            }
+
+            if ($request->edit_department) {
+                try {
+                    $validation = $request->validate([
+                        'department_name' => 'required',
+                        'department_code' => 'required',
+                    ]);
+                    if ($validation) {
+                        if ($request->id) {
+                            Department::where('id', $request->id)
+                                ->update([
+                                    'department_code' => $request->department_code,
+                                    'department_name' => $request->department_name,
+
+                                ]);
+                            session()->flash('success', 'Department Updated Successfully');
+
+                            return redirect()->route('department');
+                        }
+                    }
+
+                } catch (\Throwable $th) {
+                    session()->flash('error', $e->getMessage());
+
+                    return redirect()->back();
+                }
+            }
+
+            if ($request->edit_status) {
+                try {
+                    $validation = $request->validate([
+                        'status' => 'required',
+                    ]);
+                    if ($validation) {
+                        if ($request->id) {
+                            Department::where('id', $request->id)
+                                ->update([
+                                    'status' => $request->status,
+                                ]);
+                            session()->flash('success', 'Status Updated Successfully');
+
+                            return redirect()->route('department');
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    session()->flash('error', $e->getMessage());
+
                     return redirect()->back();
                 }
             }
         }
 
-        if($request->method() == 'GET') {
-            if($request->get_department){
+        if ($request->ajax()) {
+            if ($request->get_department) {
                 $id = $request->id;
-                $department = Department::where('id',$id)->first();
+                $department = Department::where('id', $id)->first();
+
                 return response()->json($department);
             }
-        }
 
-        if ($request->ajax()) {
+            if ($request->get_status) {
+                $id = $request->id;
+                $status = Department::where('id', $id)->first();
+
+                return response()->json($status);
+            }
+
+            if ($request->get_delete) {
+                 $id = $request->id;
+                $delete = Department::where('id', $id)->first();
+
+                return response()->json($delete);
+            }
+
             $departments = Department::query();
+            if ($request->has('department_code') && ! empty($request->department_code)) {
+                $departments->where('id', $request->department_code);
+            }
+
+            if ($request->has('department_name') && ! empty($request->department_name)) {
+                $departments->where('id', $request->department_name);
+            }
 
             return DataTables::of($departments)
                 ->addIndexColumn()
@@ -73,6 +145,8 @@ class DepartmentController extends Controller
         }
 
         $this->data['departments'] = Department::all();
+        $this->data['departmentcode'] = Department::all();
+        $this->data['departmentname'] = Department::all();
 
         return view('admin.departments')->with($this->data);
     }
