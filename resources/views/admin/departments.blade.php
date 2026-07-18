@@ -170,12 +170,12 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code</label>
+                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name</label>
+                                    <label for="department_name" class="form-label">Department Name <span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_name"
                                         name="department_name" placeholder="Enter department name" required>
                                 </div>
@@ -211,12 +211,12 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code</label>
+                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name</label>
+                                    <label for="department_name" class="form-label">Department Name <span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_name"
                                         name="department_name" placeholder="Enter department name" required>
                                 </div>

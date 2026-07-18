@@ -104,7 +104,7 @@ class DepartmentController extends Controller
 
             if ($request->get_delete) {
                  $id = $request->id;
-                $delete = Department::where('id', $id)->first();
+                $delete = Department::where('id', $id)->delete();
 
                 return response()->json($delete);
             }
@@ -144,9 +144,9 @@ class DepartmentController extends Controller
                 ->make(true);
         }
 
-        $this->data['departments'] = Department::all();
-        $this->data['departmentcode'] = Department::all();
-        $this->data['departmentname'] = Department::all();
+        $this->data['departments'] = Department::get();
+        $this->data['departmentcode'] = Department::get();
+        $this->data['departmentname'] = Department::get();
 
         return view('admin.departments')->with($this->data);
     }

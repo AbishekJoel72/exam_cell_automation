@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -20,4 +20,9 @@ class Course extends Model
         'created_at',
         'updated_at',
     ];
+
+   public function get_department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
 }
