@@ -34,6 +34,8 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
     Route::any('course',[CourseController::class,'course'])->name('course');
     Route::any('course_excel_upload',[CourseController::class,'courseexcelUpload'])->name('course_excel_upload');
     Route::any('subject',[SubjectsController::class,'subject'])->name('subject');
+    Route::any('subject_excel_upload',[SubjectsController::class,'subjectexcelUpload'])->name('subject_excel_upload');
+    Route::any('data.subject.filter',[SubjectsController::class,'subjectFilter'])->name('data.subject.filter');
     Route::any('classroom',[ClassroomController::class,'classroom'])->name('classroom');
     Route::any('students',[StudentController::class,'students'])->name('students');
     Route::any('faculty',[FacultiesController::class,'faculty'])->name('faculty');

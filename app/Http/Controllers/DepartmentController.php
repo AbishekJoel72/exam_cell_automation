@@ -88,6 +88,7 @@ class DepartmentController extends Controller
         }
 
         if ($request->ajax()) {
+
             if ($request->get_department) {
                 $id = $request->id;
                 $department = Department::where('id', $id)->first();
@@ -103,7 +104,7 @@ class DepartmentController extends Controller
             }
 
             if ($request->get_delete) {
-                 $id = $request->id;
+                $id = $request->id;
                 $delete = Department::where('id', $id)->delete();
 
                 return response()->json($delete);

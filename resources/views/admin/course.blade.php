@@ -85,7 +85,7 @@
         @elseif (isset($courses) && $courses->count() > 0)
             <div class="card mt-3">
                 <div class="card-header bg-transparent">
-                    <h5> Department Filter</h5>
+                    <h5> Courses Filter</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -137,7 +137,7 @@
 
             <div class="card mt-3">
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
-                    <h5 class="card-title">Departments</h5>
+                    <h5 class="card-title">Courses </h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#Addmodel">
@@ -199,7 +199,8 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span></label>
+                                    <label for="department_code" class="form-label">Department Code <span
+                                            class="text-danger">*</span></label>
                                     <select name="department_code" id="add_department_code" class="form-select" required>
                                         <option value="" selected disabled>All Department Code</option>
                                         @foreach ($departmentcode as $code)
@@ -208,20 +209,23 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="add_course_code"
-                                        name="course_code" placeholder="Enter Course Code" required>
+                                    <label for="course_code" class="form-label">Course Code <span
+                                            class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="add_course_code" name="course_code"
+                                        placeholder="Enter Course Code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_name" class="form-label">Course Name <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="add_course_name"
-                                        name="course_name" placeholder="Enter Course Name" required>
+                                    <label for="course_name" class="form-label">Course Name <span
+                                            class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="add_course_name" name="course_name"
+                                        placeholder="Enter Course Name" required>
                                 </div>
 
                                 <div class="mb-3 col-md-6">
-                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="add_duration"
-                                        name="duration" placeholder="Enter Duration" required>
+                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="add_duration" name="duration"
+                                        placeholder="Enter Duration" required>
                                 </div>
                             </div>
                         </div>
@@ -251,12 +255,14 @@
                         novalidate>
                         @csrf
                         <input type="hidden" name="edit_course" value="true">
-                         <input type="hidden" id="edit_course_id" name="id">
+                        <input type="hidden" id="edit_course_id" name="id">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span> </label>
-                                    <select name="department_code" id="edit_department_code" class="form-select" required>
+                                    <label for="department_code" class="form-label">Department Code <span
+                                            class="text-danger">*</span> </label>
+                                    <select name="department_code" id="edit_department_code" class="form-select"
+                                        required>
                                         <option value="" selected disabled>All Department Code</option>
                                         @foreach ($departmentcode as $code)
                                             <option value="{{ $code->id }}">{{ $code->department_code }}</option>
@@ -264,20 +270,23 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="edit_course_code"
-                                        name="course_code" placeholder="Enter Course Code" required>
+                                    <label for="course_code" class="form-label">Course Code <span
+                                            class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="edit_course_code" name="course_code"
+                                        placeholder="Enter Course Code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_name" class="form-label">Course Name <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="edit_course_name"
-                                        name="course_name" placeholder="Enter Course Name" required>
+                                    <label for="course_name" class="form-label">Course Name <span
+                                            class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="edit_course_name" name="course_name"
+                                        placeholder="Enter Course Name" required>
                                 </div>
 
                                 <div class="mb-3 col-md-6">
-                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span> </label>
-                                    <input type="text" class="form-control" id="edit_duration"
-                                        name="duration" placeholder="Enter Duration" required>
+                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="edit_duration" name="duration"
+                                        placeholder="Enter Duration" required>
                                 </div>
                             </div>
                         </div>
@@ -294,7 +303,7 @@
             </div>
         </div>
 
-         <div class="modal fade" id="Editstatusmodel" tabindex="-1" aria-labelledby="EditstatusmodelLabel"
+        <div class="modal fade" id="Editstatusmodel" tabindex="-1" aria-labelledby="EditstatusmodelLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-top">
                 <div class="modal-content">
@@ -446,11 +455,11 @@
         $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '{{ route('course') }}',
+                url: "{{ route('course') }}",
                 type: 'GET',
                 data: {
                     id: id,
-                    get_course:true,
+                    get_course: true,
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -469,10 +478,10 @@
 
         });
 
-         $(document).on('click', '.editStatusRow', function() {
+        $(document).on('click', '.editStatusRow', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '{{ route('course') }}',
+                url: "{{ route('course') }}",
                 type: 'GET',
                 data: {
                     id: id,
@@ -501,7 +510,7 @@
             let id = $(this).data('id');
             showConfirm(messages.delete_confirm, function() {
                 $.ajax({
-                    url: '{{ route('course') }}',
+                    url: "{{ route('course') }}",
                     type: 'GET',
                     data: {
                         id: id,
@@ -532,5 +541,6 @@
             });
 
         });
+
     </script>
 @endsection

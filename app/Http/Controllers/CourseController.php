@@ -54,13 +54,13 @@ class CourseController extends Controller
                     if ($validation) {
                         if ($request->id) {
                             Course::where('id', $request->id)
-                            ->update([
-                                'department_id' => $request->department_code,
-                                'course_code' => $request->course_code,
-                                'course_name' => $request->course_name,
-                                'duration' => $request->duration,
-                            ]);
-                                session()->flash('success', 'Courses Updated successfully');
+                                ->update([
+                                    'department_id' => $request->department_code,
+                                    'course_code' => $request->course_code,
+                                    'course_name' => $request->course_name,
+                                    'duration' => $request->duration,
+                                ]);
+                            session()->flash('success', 'Courses Updated successfully');
 
                             return redirect()->route('course');
                         }
@@ -96,6 +96,7 @@ class CourseController extends Controller
             }
         }
         if ($request->ajax()) {
+            
             if ($request->get_course) {
                 $id = $request->id;
                 $c = Course::where('id', $id)->first();
@@ -113,6 +114,7 @@ class CourseController extends Controller
             if ($request->get_delete) {
                 $id = $request->id;
                 $delete = Course::where('id', $id)->delete();
+
                 return response()->json($delete);
             }
 

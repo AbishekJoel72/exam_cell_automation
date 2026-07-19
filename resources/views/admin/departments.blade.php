@@ -87,8 +87,8 @@
                             <label for="department_name" class="form-label mb-1"> Department Name </label>
                             <select name="department_name" id="department_name" class="form-select ">
                                 <option value="">All Department Name</option>
-                                @foreach ($departmentname as $code)
-                                    <option value="{{ $code->id }}">{{ $code->department_name }}</option>
+                                @foreach ($departmentname as $name)
+                                    <option value="{{ $name->id }}">{{ $name->department_name }}</option>
                                 @endforeach
                             </select>
 
@@ -170,12 +170,14 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span> </label>
+                                    <label for="department_code" class="form-label">Department Code <span
+                                            class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name <span class="text-danger">*</span> </label>
+                                    <label for="department_name" class="form-label">Department Name <span
+                                            class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_name"
                                         name="department_name" placeholder="Enter department name" required>
                                 </div>
@@ -211,12 +213,14 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span class="text-danger">*</span> </label>
+                                    <label for="department_code" class="form-label">Department Code <span
+                                            class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name <span class="text-danger">*</span> </label>
+                                    <label for="department_name" class="form-label">Department Name <span
+                                            class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_name"
                                         name="department_name" placeholder="Enter department name" required>
                                 </div>
@@ -375,7 +379,7 @@
         $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '{{ route('department') }}',
+                url: "{{ route('department') }}",
                 type: 'GET',
                 data: {
                     id: id,
@@ -399,7 +403,7 @@
         $(document).on('click', '.editStatusRow', function() {
             let id = $(this).data('id');
             $.ajax({
-                url: '{{ route('department') }}',
+                url: "{{ route('department') }}",
                 type: 'GET',
                 data: {
                     id: id,
@@ -428,7 +432,7 @@
             let id = $(this).data('id');
             showConfirm(messages.delete_confirm, function() {
                 $.ajax({
-                    url: '{{ route('department') }}',
+                    url: "{{ route('department') }}",
                     type: 'GET',
                     data: {
                         id: id,
