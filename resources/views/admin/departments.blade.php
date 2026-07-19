@@ -78,7 +78,7 @@
                             <select name="department_code" id="department_code" class="form-select ">
                                 <option value="">All Department Code</option>
                                 @foreach ($departmentcode as $code)
-                                    <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                    <option value="{{ $code->department_code }}">{{ $code->department_code }}</option>
                                 @endforeach
                             </select>
 
@@ -88,10 +88,10 @@
                             <select name="department_name" id="department_name" class="form-select ">
                                 <option value="">All Department Name</option>
                                 @foreach ($departmentname as $name)
-                                    <option value="{{ $name->id }}">{{ $name->department_name }}</option>
+                                    <option value="{{ $name->department_code }}">{{ $name->department_name }}</option>
                                 @endforeach
                             </select>
-
+                            
                         </div>
                     </div>
                 </div>

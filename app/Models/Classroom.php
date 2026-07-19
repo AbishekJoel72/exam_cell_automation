@@ -9,6 +9,7 @@ class Classroom extends Model
     protected $table = 'classrooms';
     protected $fillable = [
         'room_no',
+        'building',
         'floor',
         'total_seats',
         'status',

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('room_no')->unique();
+            $table->string('room_no')->unique();
             $table->string('building');
             $table->string('floor');
-            $table->string('total_seats');
+            $table->integer('total_seats');
             $table->enum('status', ['0', '1'])->default('1');
 
             $table->timestamps();
