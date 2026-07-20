@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('seat_allocations', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('exam_id');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('classroom_id');
+            $table->string('seat_no');
+            $table->integer('row_no');
             $table->timestamps();
+            $table->foreign('exam_id') ->references('id')->on('exams')->onDelete('no action');
+            $table->foreign('student_id') ->references('id')->on('students')->onDelete('no action');
+            $table->foreign('classroom_id') ->references('id')->on('classrooms')->onDelete('no action');
         });
     }
 

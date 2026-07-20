@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invigilator_allocations', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('exam_id');
+            $table->unsignedBigInteger('staff_id');
+            $table->unsignedBigInteger('classroom_id');
             $table->timestamps();
+            $table->foreign('exam_id')->references('id')->on('exams')->onDelete('no action');
+            $table->foreign('staff_id')->references('id')->on('faculties')->onDelete('no action');
+            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('no action');
         });
     }
 

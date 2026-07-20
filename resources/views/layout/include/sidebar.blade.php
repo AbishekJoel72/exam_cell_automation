@@ -59,24 +59,13 @@
                         <span class="sidebar-text">Faculty</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <li class="{{ Request::routeIs('exams') ? 'active' : '' }}">
+                    <a href="{{ route('exams') }}">
                         <i class="fa-solid fa-file-signature me-2"></i>
                         <span class="sidebar-text">Exam</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa-solid fa-calendar-days me-2"></i>
-                        <span class="sidebar-text">Exam Semester</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa-solid fa-book-open-reader me-2"></i>
-                        <span class="sidebar-text">Exam Subject</span>
-                    </a>
-                </li>
                 <li>
                     <a href="#">
                         <i class="fa-solid fa-chair me-2"></i>

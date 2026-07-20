@@ -20,10 +20,10 @@ return new class extends Migration
             $table->date('exam_date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->enum('status', ['1', '0'])->default(1);
+            $table->enum('status', ['1', '0'])->default('1');
             $table->timestamps();
 
-            $table->foreign('department_id') ->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('department_id') ->references('id')->on('departments')->onDelete('no action');
         });
     }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\FacultiesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
@@ -42,6 +43,8 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
     Route::any('student_excel_upload',[StudentController::class,'studentsexcelUpload'])->name('student_excel_upload');
     Route::any('faculty',[FacultiesController::class,'faculty'])->name('faculty');
     Route::any('faculties_excel_upload',[FacultiesController::class,'facultyexcelUpload'])->name('faculties_excel_upload');
+    Route::any('exams',[ExamsController::class,'Exam'])->name('exams');
+    Route::any('exams_excel_upload',[ExamsController::class,'ExamexcelUpload'])->name('exams_excel_upload');
 });
 
 Route::middleware([FacultyMiddleware::class])->prefix('faculty')->group(function () {

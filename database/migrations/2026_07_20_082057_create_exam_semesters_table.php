@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exam_semesters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('exam_id');
-            $table->tinyInteger('semester');
+            $table->tinyInteger('sem');
             $table->timestamps();
             $table->foreign('exam_id')->references('id')->on('exams')->onDelete('no action');
         });
