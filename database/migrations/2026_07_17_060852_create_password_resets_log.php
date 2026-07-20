@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('is_used', ['1', '0'])->default('0');
             $table->timestamp('expires_at');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('registration')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('registration')->onDelete('no action');
         });
     }
 
