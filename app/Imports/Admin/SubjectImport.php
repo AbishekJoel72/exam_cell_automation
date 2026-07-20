@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 
 class SubjectImport implements ToCollection
 {
-   public $errors_list = [];
+    public $errors_list = [];
     public function collection(Collection $rows)
     {
         $headers = $rows->first()->toArray();
