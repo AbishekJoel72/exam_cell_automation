@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\ClassRoomExport;
 use App\Exports\Admin\ClassRoomTemplateExport;
 use App\Imports\Admin\ClassRoomImport;
 use App\Models\Classroom;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -13,8 +15,8 @@ class ClassroomController extends Controller
 {
     public function classroom(Request $request)
     {
-        if($request->method() == "POST"){
-            if($request->add_classroom){
+        if ($request->method() == 'POST') {
+            if ($request->add_classroom) {
                 try {
                     $validation = $request->validate([
                         'room_no' => 'required',
@@ -22,14 +24,15 @@ class ClassroomController extends Controller
                         'floor' => 'required',
                         'total_seats' => 'required',
                     ]);
-                    if($validation){
-                        $classroom = new Classroom();
+                    if ($validation) {
+                        $classroom = new Classroom;
                         $classroom->room_no = $request->room_no;
                         $classroom->building = $request->building;
                         $classroom->floor = $request->floor;
                         $classroom->total_seats = $request->total_seats;
                         $classroom->save();
-                        session()->flash('success','Class Room Added successfully');
+                        session()->flash('success', 'Class Room Added successfully');
+
                         return redirect()->route('classroom');
 
                     }
@@ -40,31 +43,33 @@ class ClassroomController extends Controller
                 }
             }
 
-            if($request->edit_classroom){
+            if ($request->edit_classroom) {
                 try {
-                      $validation = $request->validate([
+                    $validation = $request->validate([
                         'room_no' => 'required',
                         'building' => 'required',
                         'floor' => 'required',
                         'total_seats' => 'required',
                     ]);
-                    if($validation){
-                        if($request->id){
+                    if ($validation) {
+                        if ($request->id) {
                             Classroom::where('id', $request->id)
-                            ->update([
-                                'room_no' => $request->room_no,
-                                'building' => $request->building,
-                                'floor' => $request->floor,
-                                'total_seats' => $request->total_seats,
+                                ->update([
+                                    'room_no' => $request->room_no,
+                                    'building' => $request->building,
+                                    'floor' => $request->floor,
+                                    'total_seats' => $request->total_seats,
 
-                            ]);
-                            session()->flash('success','Class Room Update successfully');
+                                ]);
+                            session()->flash('success', 'Class Room Update successfully');
+
                             return redirect()->route('classroom');
 
                         }
                     }
                 } catch (\Throwable $th) {
                     session()->flash('error', $th->getMessage());
+
                     return redirect()->back();
                 }
             }
@@ -159,23 +164,11 @@ class ClassroomController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
+        
         $this->data['classrooms'] = Classroom::get();
-        $this->data['roomnos'] = Classroom::query()
-            ->select('room_no')
-            ->groupBy('room_no')
-            ->orderBy('room_no')
-            ->get();
-        $this->data['buildings'] = Classroom::query()
-            ->select('building')
-            ->groupBy('building')
-            ->orderBy('building')
-            ->get();
-        $this->data['floors'] = Classroom::query()
-            ->select('floor')
-            ->groupBy('floor')
-            ->orderBy('floor')
-            ->get();
-
+        $this->data['roomnos'] = Classroom::select('room_no')->get();
+        $this->data['buildings'] = Classroom::select('building') ->distinct()->orderBy('building')->get();
+        $this->data['floors'] = Classroom::select('floor')->distinct()->orderBy('floor')->get();
         return view('admin.classroom')->with($this->data);
     }
 
@@ -218,5 +211,35 @@ class ClassroomController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function ClassRoomDataExport(Request $request)
+    {
+        $type = $request->type;
+        $query = Classroom::query();
+        if ($request->filled('room_no')) {
+            $query->where('room_no', $request->room_no);
+        }
+
+        if ($request->filled('building')) {
+            $query->where('building', $request->building);
+        }
+        if ($request->filled('floor')) {
+            $query->where('floor', $request->floor);
+        }
+        if ($request->filled('total_seats')) {
+            $query->where('total_seats', $request->total_seats);
+        }
+
+        $classroom = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new ClassRoomExport($classroom), 'classroom.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.classroom_pdf', ['classroom' => $classroom]);
+
+            return $pdf->download('classroom.pdf');
+        }
     }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\CourseExport;
 use App\Exports\Admin\CourseTemplateExport;
 use App\Imports\Admin\CourseImport;
 use App\Models\Course;
 use App\Models\Department;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -96,7 +98,7 @@ class CourseController extends Controller
             }
         }
         if ($request->ajax()) {
-            
+
             if ($request->get_course) {
                 $id = $request->id;
                 $c = Course::where('id', $id)->first();
@@ -134,6 +136,9 @@ class CourseController extends Controller
 
             return DataTables::of($courses)
                 ->addIndexColumn()
+                ->addColumn('department', function ($row) {
+                    return $row->get_department->department_code.' - '.$row->get_department->department_name;
+                })
                 ->addColumn('actions', function ($row) {
                     return '
                         <div class="dropdown">
@@ -205,5 +210,32 @@ class CourseController extends Controller
 
         return redirect()->back();
 
+    }
+
+    public function CourseDataExport(Request $request)
+    {
+        $type = $request->type;
+        $query = Course::with('get_department');
+        if ($request->filled('department_code')) {
+            $query->where('department_id', $request->department_code);
+        }
+
+        if ($request->filled('course_code')) {
+            $query->where('course_code', $request->course_code);
+        }
+        if ($request->filled('course_name')) {
+            $query->where('course_name', $request->course_name);
+        }
+
+        $courses = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new CourseExport($courses), 'courses.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.course_pdf', ['courses' => $courses]);
+
+            return $pdf->download('courses.pdf');
+        }
     }
 }

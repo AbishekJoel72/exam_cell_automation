@@ -1,14 +1,14 @@
 @extends('layout.default')
 @section('content')
     <div class="container">
-        @if (!isset($exams) || $exams->count() == 0)
+        @if (!isset($seat_allocation) || $seat_allocation->count() == 0)
             <div class="card mt-3">
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Exams Configuration</h5>
+                    <h5 class="card-title">Seat Allocation Configuration</h5>
                 </div>
                 <div class="card-body">
                     <!-- Download Template Form -->
-                    <form action="{{ route('exams_excel_upload') }}" method="POST" id="downloadForm">
+                    <form action="{{ route('seat_allocate_excel_upload') }}" method="POST" id="downloadForm">
                         @csrf
                         <input type="hidden" name="action" value="download">
                         <div class="d-flex gap-4 flex-wrap">
@@ -19,17 +19,6 @@
                                         <input class="form-check-input" type="checkbox" id="selectAllFields">
                                         <label class="form-check-label" for="selectAllFields">
                                             Select All Fields
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Department Code -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="department_code" id="chkDepartmentCode">
-                                        <label class="form-check-label" for="chkDepartmentCode">
-                                            Department Code
                                         </label>
                                     </div>
                                 </div>
@@ -45,57 +34,48 @@
                                     </div>
                                 </div>
 
-                                <!-- Exam Type -->
+                                <!-- Register No -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_type" id="chkExamType">
-                                        <label class="form-check-label" for="chkExamType">
-                                            Exam Type
+                                            value="register_no" id="chkRegisterNo">
+                                        <label class="form-check-label" for="chkRegisterNo">
+                                            Register No
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Exam Cycle -->
+
+
+                                <!-- Room No -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_cycle" id="chkExamCycle">
-                                        <label class="form-check-label" for="chkExamCycle">
-                                            Exam Cycle
+                                            value="room_no" id="chkRoomNo">
+                                        <label class="form-check-label" for="chkRoomNo">
+                                            Room No
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Exam Date -->
+                                <!-- Seat No -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_date" id="chkExamDate">
-                                        <label class="form-check-label" for="chkExamDate">
-                                            Exam Date
+                                            value="seat_no" id="chkSeatNo">
+                                        <label class="form-check-label" for="chkSeatNo">
+                                            Seat No
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Start Time -->
+                                <!-- Row No -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="start_time" id="chkStartTime">
-                                        <label class="form-check-label" for="chkStartTime">
-                                            Start Time
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- End Time -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="end_time" id="chkEndTime">
-                                        <label class="form-check-label" for="chkEndTime">
-                                            End Time
+                                            value="row_no" id="chkRowNo">
+                                        <label class="form-check-label" for="chkRowNo">
+                                            Row No
                                         </label>
                                     </div>
                                 </div>
@@ -107,7 +87,7 @@
                     <hr>
 
                     <!-- Upload Form: Excel -->
-                    <form action="{{ route('exams_excel_upload') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('seat_allocate_excel_upload') }}" method="POST" enctype="multipart/form-data"
                         id="uploadForm">
                         @csrf
                         <input type="hidden" name="action" value="upload">
@@ -131,18 +111,30 @@
                     </button>
                 </div>
             </div>
-        @elseif (isset($exams) && $exams->count() > 0)
+        @elseif (isset($seat_allocation) && $seat_allocation->count() > 0)
             <div class="card mt-3">
                 <div class="card-header bg-transparent">
-                    <h5>Exam Filter</h5>
+                    <h5>Seat Allocation Filter</h5>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
 
+                        <!-- Exam -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Exam</label>
+                            <select name="exam_name" id="exam_name" class="form-select">
+                                <option value="">All Exam Name</option>
+                                @foreach ($examName as $e)
+                                    <option value="{{ $e->exam_name }}">{{ $e->exam_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Department -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Department</label>
-                            <select id="department_id" name="department_id" class="form-select">
+                            <select id="department_id"name="department_id" class="form-select">
                                 <option value="">All Departments</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">
@@ -152,52 +144,34 @@
                             </select>
                         </div>
 
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Name</label>
-                            <select name="exam_name" id="exam_name" class="form-select">
-                                <option value="">All Exam Name</option>
-                                @foreach ($examName as $e)
-                                    <option value="{{ $e->exam_name }}">{{ $e->exam_name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Type</label>
-                            <select id="exam_type" name="exam_type" class="form-select">
-                                <option value="">All Exam Type</option>
-                                @foreach ($examtype as $item)
-                                    <option value="{{ $item->exam_type }}">{{ $item->exam_type }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Cycle</label>
-                            <select id="exam_cycle" name="exam_cycle" class="form-select">
-                                <option value="">All Exam Cycles</option>
-                                @foreach ($examcycle as $exam_cycle)
-                                    <option value="{{ $exam_cycle->exam_cycle }}">{{ $exam_cycle->exam_cycle }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
+                        <!-- Exam Date -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Exam Date</label>
                             <input type="text" id="exam_date" name="exam_date" class="form-control filter_date"
                                 placeholder="Select Date">
                         </div>
 
-
+                        <!-- Register No -->
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Status</label>
-                            <select id="status" name="status" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                            <label class="form-label">Register No</label>
+                            <input type="text" id="register_no" class="form-control" placeholder="Enter Register No">
+                        </div>
+
+                        <!-- Student Name -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Student Name</label>
+                            <input type="text" id="student_name" class="form-control"
+                                placeholder="Enter Student Name">
+                        </div>
+
+                        <!-- Room No -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Room No</label>
+                            <select id="classroom_id" name="classroom_id" class="form-select">
+                                <option value="">All Rooms</option>
+                                @foreach ($classrooms as $room)
+                                    <option value="{{ $room->id }}">{{ $room->room_no }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -218,7 +192,7 @@
 
             <div class="card mt-3">
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
-                    <h5 class="card-title">Exams</h5>
+                    <h5 class="card-title">Seat Allocation</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#Addmodel">
@@ -250,14 +224,15 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Department</th>
                                 <th>Exam Name</th>
-                                <th>Exam Type</th>
-                                <th>Exam Cycle</th>
+                                <th>Department</th>
                                 <th>Exam Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Status</th>
+                                <th>Register No</th>
+                                <th>Student Name</th>
+                                <th>Room No</th>
+                                <th>Seat No</th>
+                                <th>Row No</th>
+
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -293,19 +268,20 @@
                 // endDate: new Date()
             });
 
-
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('exams') }}",
+                    url: "{{ route('seat_allocate') }}",
                     data: function(d) {
-                        d.department_id = $('#department_id').val();
                         d.exam_name = $('#exam_name').val();
-                        d.exam_type = $('#exam_type').val();
-                        d.exam_cycle = $('#exam_cycle').val();
+                        d.department_id = $('#department_id').val();
                         d.exam_date = $('#exam_date').val();
-                        d.status = $('#status').val();
+                        d.register_no = $('#register_no').val();
+                        d.student_name = $('#student_name').val();
+                        d.classroom_id = $('#classroom_id').val();
+
+
                     }
                 },
 
@@ -317,26 +293,19 @@
 
                     },
                     {
+                        data: 'get_exams_details.exam_name',
+                        name: 'get_exams_details.exam_name',
+
+                    },
+                    {
                         data: 'department',
                         name: 'department',
 
                     },
 
                     {
-                        data: 'exam_name',
-                        name: 'exam_name',
-                    },
-                    {
-                        data: 'exam_type',
-                        name: 'exam_type',
-                    },
-                    {
-                        data: 'exam_cycle',
-                        name: 'exam_cycle',
-                    },
-                    {
-                        data: 'exam_date',
-                        name: 'exam_date',
+                        data: 'get_exams_details.exam_date',
+                        name: 'get_exams_details.exam_date',
                         render: function(data) {
 
                             if (!data) return '-';
@@ -350,33 +319,29 @@
                             return `${day}-${month}-${year}`;
                         }
                     },
-
                     {
-                        data: 'start_time',
-                        name: 'start_time',
-
+                        data: 'get_student.register_no',
+                        name: 'get_student.register_no',
                     },
-
                     {
-                        data: 'end_time',
-                        name: 'end_time',
+                        data: 'student_name',
+                        name: 'student_name',
 
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        className: 'text-center',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
+                        data: 'get_classroom.room_no',
+                        name: 'get_classroom.room_no',
 
-                            if (data == 1) {
-                                return '<span class="badge bg-success">Active</span>';
-                            } else {
-                                return '<span class="badge bg-danger">Inactive</span>';
-                            }
+                    },
+                    {
+                        data: 'seat_no',
+                        name: 'seat_no',
 
-                        }
+                    },
+                    {
+                        data: 'row_no',
+                        name: 'row_no',
+
                     },
                     {
                         data: 'actions',
@@ -387,18 +352,23 @@
                     }
                 ]
             });
+            $('#classroom_id').on('change', function() {
+                console.log("Selected:", $(this).val());
+            });
             $('#filterBtn').click(function(e) {
                 e.preventDefault();
                 table.ajax.reload();
             });
 
             $('#resetBtn').click(function() {
-                $('#department_id').val('');
+
                 $('#exam_name').val('');
-                $('#exam_type').val('');
-                $('#exam_cycle').val('');
+                $('#department_id').val('');
                 $('#exam_date').val('');
-                $('#status').val('');
+                $('#register_no').val('');
+                $('#student_name').val('');
+                $('#classroom_id').val('');
+
                 table.ajax.reload();
             });
         });
@@ -406,23 +376,23 @@
         $(document).on('click', '.exportBtn', function(e) {
             e.preventDefault();
             let type = $(this).data('type');
-            let department_id = $('#department_id').val();
             let exam_name = $('#exam_name').val();
-            let exam_type = $('#exam_type').val();
-            let exam_cycle = $('#exam_cycle').val();
+            let department_id = $('#department_id').val();
             let exam_date = $('#exam_date').val();
-            let status = $('#status').val();
-            let url = "{{ route('exams_export') }}";
+            let register_no = $('#register_no').val();
+            let student_name = $('#student_name').val();
+            let classroom_id = $('#classroom_id').val();
+            let url = "{{ route('seatallocation_export') }}";
 
             window.location.href =
                 url +
                 '?type=' + type +
-                '&department_id=' + encodeURIComponent(department_id) +
                 '&exam_name=' + encodeURIComponent(exam_name) +
-                '&exam_type=' + encodeURIComponent(exam_type) +
-                '&exam_cycle=' + encodeURIComponent(exam_cycle) +
+                '&department_id=' + encodeURIComponent(department_id) +
                 '&exam_date=' + encodeURIComponent(exam_date) +
-                '&status=' + encodeURIComponent(status);
+                '&register_no=' + encodeURIComponent(register_no) +
+                '&student_name=' + encodeURIComponent(student_name) +
+                '&classroom_id=' + encodeURIComponent(classroom_id);
 
         });
     </script>

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\FacultiesExport;
 use App\Exports\Admin\FacultiesTemplateExport;
 use App\Imports\Admin\FacultiesImport;
 use App\Models\Department;
 use App\Models\Faculties;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -49,6 +51,9 @@ class FacultiesController extends Controller
                 ->addColumn('faculty_name', function ($row) {
                     return $row->first_name.' '.$row->last_name;
                 })
+                ->addColumn('department', function ($row) {
+                    return $row->get_department->department_code.' - '.$row->get_department->department_name;
+                })
                 ->addColumn('actions', function ($row) {
                     return '
                         <div class="dropdown">
@@ -75,16 +80,8 @@ class FacultiesController extends Controller
 
         $this->data['faculties'] = Faculties::get();
         $this->data['departments'] = Department::get();
-        $this->data['designations'] = Faculties::query()
-            ->select('designation')
-            ->groupBy('designation')
-            ->orderBy('designation')
-            ->get();
-        $this->data['qualifications'] = Faculties::query()
-            ->select('qualification')
-            ->groupBy('qualification')
-            ->orderBy('qualification')
-            ->get();
+        $this->data['designations'] = Faculties::select('designation')->distinct()->orderBy('designation')->get();
+        $this->data['qualifications'] = Faculties::select('qualification')->distinct()->orderBy('qualification')->get();
 
         return view('admin.faculty')->with($this->data);
     }
@@ -159,5 +156,49 @@ class FacultiesController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function FacultyDataExport(Request $request)
+    {
+         $type = $request->type;
+        $query = Faculties::with('get_department');
+
+        if ($request->filled('department_id')) {
+                $query->where('department_id', $request->department_id);
+            }
+
+            if ($request->filled('staff_code')) {
+                $query->where('staff_code', 'like', '%'.$request->staff_code.'%');
+            }
+
+            if ($request->filled('faculty_name')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%'.$request->faculty_name.'%')
+                        ->orWhere('last_name', 'like', '%'.$request->faculty_name.'%');
+                });
+            }
+
+            if ($request->filled('designation')) {
+                $query->where('designation', $request->designation);
+            }
+
+            if ($request->filled('qualification')) {
+                $query->where('qualification', $request->qualification);
+            }
+
+            if ($request->filled('status')) {
+                $query->where('status', $request->status);
+            }
+
+        $faculties = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new FacultiesExport($faculties), 'faculties.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.faculties_pdf', ['faculties' => $faculties]);
+
+            return $pdf->download('faculties.pdf');
+        }
     }
 }

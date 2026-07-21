@@ -18,4 +18,13 @@ class Exams extends Model
         'status',
 
     ];
+     protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+      public function get_department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
 }

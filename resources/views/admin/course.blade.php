@@ -90,11 +90,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="department_code" class="form-label mb-1"> Department Code </label>
+                            <label for="department_code" class="form-label mb-1"> Department </label>
                             <select name="department_code" id="department_code" class="form-select ">
-                                <option value="">All Department Code</option>
+                                <option value="">All Department </option>
                                 @foreach ($departmentcode as $code)
-                                    <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                    <option value="{{ $code->id }}">{{ $code->department_code }} -
+                                        {{ $code->department_name }}</option>
                                 @endforeach
                             </select>
 
@@ -104,7 +105,7 @@
                             <select name="course_code" id="course_code" class="form-select ">
                                 <option value="">All Course Code </option>
                                 @foreach ($coursecode as $code)
-                                    <option value="{{ $code->id }}">{{ $code->course_code }}</option>
+                                    <option value="{{ $code->course_code }}">{{ $code->course_code }}</option>
                                 @endforeach
                             </select>
 
@@ -115,7 +116,7 @@
                             <select name="course_name" id="course_name" class="form-select ">
                                 <option value="">All Department Name</option>
                                 @foreach ($coursename as $code)
-                                    <option value="{{ $code->id }}">{{ $code->course_name }}</option>
+                                    <option value="{{ $code->course_name }}">{{ $code->course_name }}</option>
                                 @endforeach
                             </select>
 
@@ -393,24 +394,20 @@
                         className: 'text-center',
                     },
                     {
-                        data: 'get_department.department_code',
-                        name: 'get_department.department_code',
-                        className: 'text-center',
+                        data: 'department',
+                        name: 'department',
                     },
                     {
                         data: 'course_code',
                         name: 'course_code',
-                        className: 'text-center',
                     },
                     {
                         data: 'course_name',
                         name: 'course_name',
-                        className: 'text-center',
                     },
                     {
                         data: 'duration',
                         name: 'duration',
-                        className: 'text-center',
                     },
                     {
                         data: 'status',
@@ -542,5 +539,21 @@
 
         });
 
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+            let type = $(this).data('type');
+            let department_code = $('#department_code').val();
+            let course_code = $('#course_code').val();
+            let course_name = $('#course_name').val();
+            let url = "{{ route('courses_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&department_code=' + encodeURIComponent(department_code)+
+                '&course_code=' + encodeURIComponent(course_code)+
+                '&course_name=' + encodeURIComponent(course_name);
+
+        });
     </script>
 @endsection

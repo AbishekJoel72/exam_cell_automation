@@ -556,5 +556,24 @@
             });
 
         });
+
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+            let type = $(this).data('type');
+            let room_no = $('#room_no').val();
+            let building = $('#building').val();
+            let floor = $('#floor').val();
+            let total_seats = $('#total_seats').val();
+            let url = "{{ route('classroom_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&room_no=' + encodeURIComponent(room_no) +
+                '&building=' + encodeURIComponent(building) +
+                '&floor=' + encodeURIComponent(floor)+
+                '&total_seats=' + encodeURIComponent(total_seats);
+
+        });
     </script>
 @endsection

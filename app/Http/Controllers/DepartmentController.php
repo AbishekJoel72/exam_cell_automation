@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\DepartmentExport;
 use App\Exports\Admin\DepartmentTemplateExport;
 use App\Imports\Admin\DepartmentImport;
 use App\Models\Department;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -112,11 +114,11 @@ class DepartmentController extends Controller
 
             $departments = Department::query();
             if ($request->has('department_code') && ! empty($request->department_code)) {
-                $departments->where('id', $request->department_code);
+                $departments->where('department_code', $request->department_code);
             }
 
             if ($request->has('department_name') && ! empty($request->department_name)) {
-                $departments->where('id', $request->department_name);
+                $departments->where('department_name', $request->department_name);
             }
 
             return DataTables::of($departments)
@@ -186,5 +188,30 @@ class DepartmentController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function DepartmentDataExport(Request $request)
+    {
+        $type = $request->type;
+        $query = Department::query();
+
+        if ($request->filled('department_code')) {
+            $query->where('department_code', $request->department_code);
+        }
+
+        if ($request->filled('department_name')) {
+            $query->where('department_name', $request->department_name);
+        }
+
+        $departments = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new DepartmentExport($departments), 'departments.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.department_pdf', ['departments' => $departments]);
+
+            return $pdf->download('departments.pdf');
+        }
     }
 }

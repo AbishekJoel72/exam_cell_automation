@@ -272,6 +272,13 @@
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
                     <h5 class="card-title">Faculty</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger">
+                            Create Credentials
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                            Download Credentials
+                        </a>
+
                         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#Addmodel">
                             <i class="fa-solid fa-plus"></i> Add New
@@ -310,7 +317,6 @@
                                 <th>Experience</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -374,8 +380,8 @@
                     },
 
                     {
-                        data: 'get_department.department_code',
-                        name: 'get_department.department_code',
+                        data: 'department',
+                        name: 'department',
                     },
 
 
@@ -439,6 +445,29 @@
                 $('#status').val('');
                 table.ajax.reload();
             });
+        });
+
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+            let type = $(this).data('type');
+            let department_id = $('#department_id').val();
+            let staff_code = $('#staff_code').val();
+            let faculty_name = $('#faculty_name').val();
+            let designation = $('#designation').val();
+            let qualification = $('#qualification').val();
+            let status = $('#status').val();
+            let url = "{{ route('faculty_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&department_id=' + encodeURIComponent(department_id) +
+                '&staff_code=' + encodeURIComponent(staff_code) +
+                '&faculty_name=' + encodeURIComponent(faculty_name) +
+                '&designation=' + encodeURIComponent(designation) +
+                '&qualification=' + encodeURIComponent(qualification) +
+                '&status=' + encodeURIComponent(status);
+
         });
     </script>
 @endsection

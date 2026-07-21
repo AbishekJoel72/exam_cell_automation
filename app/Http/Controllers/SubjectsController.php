@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\SubjectsExport;
 use App\Exports\Admin\SubjectTemplateExport;
 use App\Imports\Admin\SubjectImport;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Subjects;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -160,6 +162,12 @@ class SubjectsController extends Controller
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
+                ->addColumn('department', function($row){
+                    return $row->get_department->department_code. ' - '. $row->get_department->department_name;
+                })
+                ->addColumn('courses', function($row){
+                    return $row->get_courses->course_code. ' - '. $row->get_courses->course_name;
+                })
                 ->addColumn('actions', function ($row) {
                     return '
                         <div class="dropdown">
@@ -187,11 +195,7 @@ class SubjectsController extends Controller
         $this->data['subject'] = Subjects::get();
         $this->data['subjectcode'] = Subjects::get();
         $this->data['subjectname'] = Subjects::get();
-        $this->data['semester'] = Subjects::select('semester')
-            ->distinct()
-            ->orderBy('semester', 'asc')
-            ->get();
-
+        $this->data['semester'] = Subjects::select('semester')->distinct()->orderBy('semester', 'asc')->get();
         $this->data['departmentcode'] = Department::get();
         $this->data['coursecode'] = Course::get();
 
@@ -242,5 +246,32 @@ class SubjectsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function SubjectDataExport(Request $request)
+    {
+        $type = $request->type;
+        $query = Subjects::with('get_department', 'get_courses');
+        if ($request->filled('semester')) {
+            $query->where('semester', $request->semester);
+        }
+
+        if ($request->filled('subject_code')) {
+            $query->where('subject_code', $request->subject_code);
+        }
+        if ($request->filled('subject_name')) {
+            $query->where('subject_name', $request->subject_name);
+        }
+
+        $subjectses = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new SubjectsExport($subjectses), 'subjects.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.subject_pdf', ['subjectses' => $subjectses]);
+
+            return $pdf->download('subjects.pdf');
+        }
     }
 }

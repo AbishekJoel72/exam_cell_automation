@@ -88,10 +88,10 @@
                             <select name="department_name" id="department_name" class="form-select ">
                                 <option value="">All Department Name</option>
                                 @foreach ($departmentname as $name)
-                                    <option value="{{ $name->department_code }}">{{ $name->department_name }}</option>
+                                    <option value="{{ $name->department_name }}">{{ $name->department_name }}</option>
                                 @endforeach
                             </select>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -294,21 +294,21 @@
 @section('script')
     @include('layout.datatable')
     <script>
-        // Select All Checkbox
-        const selectAllFields = document.getElementById('selectAllFields');
-
-        if (selectAllFields) {
-            selectAllFields.addEventListener('change', function() {
-                let checkboxes = document.querySelectorAll('.field-checkbox');
-
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.checked = selectAllFields.checked;
-                });
-            });
-        }
+    
 
         // DataTable
         $(document).ready(function() {
+            $('#selectAllFields').change(function() {
+                $('.field-checkbox').prop('checked', this.checked);
+            });
+
+            $('.field-checkbox').change(function() {
+                if ($('.field-checkbox:checked').length == $('.field-checkbox').length) {
+                    $('#selectAllFields').prop('checked', true);
+                } else {
+                    $('#selectAllFields').prop('checked', false);
+                }
+            });
 
             var table = $('#datatable').DataTable({
                 processing: true,
@@ -336,7 +336,7 @@
                     {
                         data: 'department_name',
                         name: 'department_name',
-                        className: 'text-center',
+
                     },
                     {
                         data: 'status',
@@ -462,6 +462,21 @@
                 });
             });
 
+        });
+
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+
+            let type = $(this).data('type');
+            let department_code = $('#department_code').val();
+            let department_name = $('#department_name').val();
+            let url = "{{ route('department_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&department_code=' + encodeURIComponent(department_code) +
+                '&department_name=' + encodeURIComponent(department_name);
         });
     </script>
 @endsection

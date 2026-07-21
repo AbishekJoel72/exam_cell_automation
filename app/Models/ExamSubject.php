@@ -11,4 +11,8 @@ class ExamSubject extends Model
         'exam_id',
         'subject_id',
     ];
+     protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

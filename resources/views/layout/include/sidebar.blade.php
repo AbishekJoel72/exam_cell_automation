@@ -66,14 +66,14 @@
                     </a>
                 </li>
                 <li>
-                <li>
-                    <a href="#">
+                <li class="{{ Request::routeIs('seat_allocate') ? 'active' : '' }}">
+                    <a href="{{ route('seat_allocate') }}">
                         <i class="fa-solid fa-chair me-2"></i>
                         <span class="sidebar-text">Seat Allocation</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <li class="{{ Request::routeIs('invigilator_allocate') ? 'active' : '' }}">
+                    <a href="{{ route('invigilator_allocate') }}">
                         <i class="fa-solid fa-user-check me-2"></i>
                         <span class="sidebar-text">Invigilator Allocation</span>
                     </a>

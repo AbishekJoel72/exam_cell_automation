@@ -11,4 +11,8 @@ class ExamSemester extends Model
         'exam_id',
         'semester',
     ];
+     protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

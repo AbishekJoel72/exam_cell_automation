@@ -9,6 +9,7 @@
             width: 100%;
             overflow-x: auto;
         }
+
         #datatable {
             width: 100% !important;
             margin-top: 12px;
@@ -23,9 +24,10 @@
             border: 1px solid #000 !important;
             box-sizing: border-box;
         }
+
         #datatable thead th {
             background: #fff;
-              padding: 10px 12px;
+            padding: 10px 12px;
             font-weight: 600;
             text-align: center;
         }
@@ -275,7 +277,7 @@
                                 <option value="">All Departments</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">
-                                        {{ $department->department_code }}
+                                        {{ $department->department_code }} - {{ $department->department_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -288,7 +290,7 @@
                                 <option value="">All Courses</option>
                                 @foreach ($courses as $course)
                                     <option value="{{ $course->id }}">
-                                        {{ $course->course_code }}
+                                        {{ $course->course_code }} - {{ $course->course_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -310,7 +312,7 @@
                             <label for="section" class="form-label">Section</label>
                             <select name="section" id="section" class="form-select">
                                 <option value="">All Sections</option>
-                                 @foreach ($sections as $s)
+                                @foreach ($sections as $s)
                                     <option value="{{ $s->section }}">{{ $s->section }}</option>
                                 @endforeach
                             </select>
@@ -352,10 +354,18 @@
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
                     <h5 class="card-title">Student</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger">
+                             Create Credentials
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                             Download Credentials
+                        </a>
+
                         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#Addmodel">
                             <i class="fa-solid fa-plus"></i> Add New
                         </a>
+
 
                         <div class="dropdown">
                             <button class="btn btn-sm btn-warning" type="button" data-bs-toggle="dropdown">
@@ -368,11 +378,11 @@
                                         Excel
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#" class="dropdown-item exportBtn" data-type="pdf">
                                         PDF
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -462,12 +472,12 @@
 
                     },
                     {
-                        data: 'get_department.department_code',
-                        name: 'get_department.department_code',
+                        data: 'department',
+                        name: 'department',
                     },
                     {
-                        data: 'get_course.course_code',
-                        name: 'get_course.course_code',
+                        data: 'course',
+                        name: 'course',
 
                     },
 
@@ -543,6 +553,29 @@
                 $('#register_no').val('');
                 table.ajax.reload();
             });
+        });
+
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+            let type = $(this).data('type');
+            let department_id = $('#department_id').val();
+            let course_id = $('#course_id').val();
+            let semester = $('#semester').val();
+            let section = $('#section').val();
+            let academic_year = $('#academic_year').val();
+            let register_no = $('#register_no').val();
+            let url = "{{ route('student_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&department_id=' + encodeURIComponent(department_id) +
+                '&course_id=' + encodeURIComponent(course_id)+
+                '&semester=' + encodeURIComponent(semester) +
+                '&section=' + encodeURIComponent(section) +
+                '&academic_year=' + encodeURIComponent(academic_year) +
+                '&register_no=' + encodeURIComponent(register_no);
+
         });
     </script>
 @endsection

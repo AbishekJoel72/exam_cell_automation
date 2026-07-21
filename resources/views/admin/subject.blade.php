@@ -469,14 +469,12 @@
                         className: 'text-center',
                     },
                     {
-                        data: 'get_department.department_code',
-                        name: 'get_department.department_code',
-                        className: 'text-center',
+                        data: 'department',
+                        name: 'department',
                     },
                     {
-                        data: 'get_courses.course_code',
-                        name: 'get_courses.course_code',
-                        className: 'text-center',
+                        data: 'courses',
+                        name: 'courses',
                     },
                     {
                         data: 'semester',
@@ -654,6 +652,23 @@
                 }
 
             });
+
+        });
+
+        $(document).on('click', '.exportBtn', function(e) {
+            e.preventDefault();
+            let type = $(this).data('type');
+            let semester = $('#semester').val();
+            let subject_code = $('#subject_code').val();
+            let subject_name = $('#subject_name').val();
+            let url = "{{ route('subjects_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + type +
+                '&semester=' + encodeURIComponent(semester)+
+                '&subject_code=' + encodeURIComponent(subject_code)+
+                '&subject_name=' + encodeURIComponent(subject_name);
 
         });
     </script>

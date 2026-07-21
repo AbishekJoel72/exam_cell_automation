@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\StudentExport;
 use App\Exports\Admin\StudentTemplateExport;
 use App\Imports\Admin\StudentImport;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -18,32 +20,26 @@ class StudentController extends Controller
         if ($request->ajax()) {
             $student = Student::with('get_department', 'get_course', 'get_classroom');
 
-            // Department
             if ($request->filled('department_id')) {
                 $student->where('department_id', $request->department_id);
             }
 
-            // Course
             if ($request->filled('course_id')) {
                 $student->where('course_id', $request->course_id);
             }
 
-            // Semester
             if ($request->filled('semester')) {
                 $student->where('semester', $request->semester);
             }
 
-            // Section
             if ($request->filled('section')) {
                 $student->where('section', $request->section);
             }
 
-            // Academic Year
             if ($request->filled('academic_year')) {
                 $student->where('academic_year', $request->academic_year);
             }
 
-            // Register No
             if ($request->filled('register_no')) {
                 $student->where('register_no', 'like', '%'.$request->register_no.'%');
             }
@@ -52,6 +48,12 @@ class StudentController extends Controller
                 ->addIndexColumn()
                 ->addColumn('student_name', function ($row) {
                     return $row->first_name.' '.$row->last_name;
+                })
+                ->addColumn('department', function ($row) {
+                    return $row->get_department->department_code.' -'.$row->get_department->department_name;
+                })
+                ->addColumn('course', function ($row) {
+                    return $row->get_course->course_code.' -'.$row->get_course->course_name;
                 })
                 ->addColumn('actions', function ($row) {
                     return '
@@ -80,22 +82,9 @@ class StudentController extends Controller
         $this->data['student'] = Student::get();
         $this->data['departments'] = Department::get();
         $this->data['courses'] = Course::get();
-        $this->data['semesters'] = Student::query()
-            ->select('semester')
-            ->groupBy('semester')
-            ->orderBy('semester')
-            ->get();
-        $this->data['sections'] = Student::query()
-            ->select('section')
-            ->groupBy('section')
-            ->orderBy('section')
-            ->get();
-        $this->data['academic'] = Student::query()
-            ->select('academic_year')
-            ->groupBy('academic_year')
-            ->orderBy('academic_year')
-            ->get();
-
+        $this->data['semesters'] = Student::select('semester')->distinct()->orderBy('semester')->get();
+        $this->data['sections'] = Student::select('section')->distinct()->orderBy('section')->get();
+        $this->data['academic'] = Student::query()->select('academic_year')->distinct()->orderBy('academic_year')->get();
         return view('admin.students')->with($this->data);
     }
 
@@ -191,5 +180,46 @@ class StudentController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function StudentDataExport(Request $request)
+    {
+        $type = $request->type;
+        $query = Student::with('get_department', 'get_course', 'get_classroom');
+
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        if ($request->filled('course_id')) {
+            $query->where('course_id', $request->course_id);
+        }
+
+        if ($request->filled('semester')) {
+            $query->where('semester', $request->semester);
+        }
+
+        if ($request->filled('section')) {
+            $query->where('section', $request->section);
+        }
+
+        if ($request->filled('academic_year')) {
+            $query->where('academic_year', $request->academic_year);
+        }
+
+        if ($request->filled('register_no')) {
+            $query->where('register_no', 'like', '%'.$request->register_no.'%');
+        }
+
+        $student = $query->get();
+        if ($request->type == 'excel') {
+            return Excel::download(new StudentExport($student), 'student.xlsx');
+        }
+
+        if ($type == 'pdf') {
+            $pdf = Pdf::loadView('Export.pdf.student_pdf', ['student' => $student]);
+
+            return $pdf->download('student.pdf');
+        }
     }
 }

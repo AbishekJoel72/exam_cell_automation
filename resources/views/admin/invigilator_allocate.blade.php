@@ -1,14 +1,14 @@
 @extends('layout.default')
 @section('content')
     <div class="container">
-        @if (!isset($exams) || $exams->count() == 0)
+        @if (!isset($invigilator_allocation) || $invigilator_allocation->count() == 0)
             <div class="card mt-3">
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Exams Configuration</h5>
+                    <h5 class="card-title">Invigilator Allocation Configuration</h5>
                 </div>
                 <div class="card-body">
                     <!-- Download Template Form -->
-                    <form action="{{ route('exams_excel_upload') }}" method="POST" id="downloadForm">
+                    <form action="{{ route('invigilator_excel_upload') }}" method="POST" id="downloadForm">
                         @csrf
                         <input type="hidden" name="action" value="download">
                         <div class="d-flex gap-4 flex-wrap">
@@ -23,19 +23,8 @@
                                     </div>
                                 </div>
 
-                                <!-- Department Code -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="department_code" id="chkDepartmentCode">
-                                        <label class="form-check-label" for="chkDepartmentCode">
-                                            Department Code
-                                        </label>
-                                    </div>
-                                </div>
-
                                 <!-- Exam Name -->
-                                <div class="col-md-3 mt-2">
+                                <div class="col-md-4 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
                                             value="exam_name" id="chkExamName">
@@ -45,57 +34,24 @@
                                     </div>
                                 </div>
 
-                                <!-- Exam Type -->
+                                <!-- Staff Code -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_type" id="chkExamType">
-                                        <label class="form-check-label" for="chkExamType">
-                                            Exam Type
+                                            value="staff_code" id="chkStaffCode">
+                                        <label class="form-check-label" for="chkStaffCode">
+                                            Staff Code
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Exam Cycle -->
+                                <!-- Room No -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_cycle" id="chkExamCycle">
-                                        <label class="form-check-label" for="chkExamCycle">
-                                            Exam Cycle
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Exam Date -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="exam_date" id="chkExamDate">
-                                        <label class="form-check-label" for="chkExamDate">
-                                            Exam Date
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- Start Time -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="start_time" id="chkStartTime">
-                                        <label class="form-check-label" for="chkStartTime">
-                                            Start Time
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <!-- End Time -->
-                                <div class="col-md-3 mt-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
-                                            value="end_time" id="chkEndTime">
-                                        <label class="form-check-label" for="chkEndTime">
-                                            End Time
+                                            value="room_no" id="chkRoomNo">
+                                        <label class="form-check-label" for="chkRoomNo">
+                                            Room No
                                         </label>
                                     </div>
                                 </div>
@@ -107,7 +63,7 @@
                     <hr>
 
                     <!-- Upload Form: Excel -->
-                    <form action="{{ route('exams_excel_upload') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('invigilator_excel_upload') }}" method="POST" enctype="multipart/form-data"
                         id="uploadForm">
                         @csrf
                         <input type="hidden" name="action" value="upload">
@@ -131,15 +87,16 @@
                     </button>
                 </div>
             </div>
-        @elseif (isset($exams) && $exams->count() > 0)
+        @elseif (isset($invigilator_allocation) && $invigilator_allocation->count() > 0)
             <div class="card mt-3">
                 <div class="card-header bg-transparent">
-                    <h5>Exam Filter</h5>
+                    <h5>Invigilator Allocation Filter</h5>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
 
+                        <!-- Department -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Department</label>
                             <select id="department_id" name="department_id" class="form-select">
@@ -152,54 +109,54 @@
                             </select>
                         </div>
 
-
+                        <!-- Staff -->
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Name</label>
-                            <select name="exam_name" id="exam_name" class="form-select">
-                                <option value="">All Exam Name</option>
-                                @foreach ($examName as $e)
-                                    <option value="{{ $e->exam_name }}">{{ $e->exam_name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Type</label>
-                            <select id="exam_type" name="exam_type" class="form-select">
-                                <option value="">All Exam Type</option>
-                                @foreach ($examtype as $item)
-                                    <option value="{{ $item->exam_type }}">{{ $item->exam_type }}</option>
+                            <label class="form-label">Staff</label>
+                            <select id="staff_id" class="form-select">
+                                <option value="">All Staff</option>
+                                @foreach ($staffs as $staff)
+                                    <option value="{{ $staff->id }}">
+                                        {{ $staff->staff_code }} - {{ $staff->first_name }} {{ $staff->last_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
-
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Exam Cycle</label>
-                            <select id="exam_cycle" name="exam_cycle" class="form-select">
-                                <option value="">All Exam Cycles</option>
-                                @foreach ($examcycle as $exam_cycle)
-                                    <option value="{{ $exam_cycle->exam_cycle }}">{{ $exam_cycle->exam_cycle }}</option>
+                            <label class="form-label">Exam</label>
+                            <select id="exam_id" name="exam_id" class="form-select">
+                                <option value="">All Exams</option>
+                                @foreach ($exams as $exam)
+                                    <option value="{{ $exam->exam_name  }}">
+                                        {{ $exam->exam_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
+                        <!-- Exam Date -->
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Exam Date</label>
                             <input type="text" id="exam_date" name="exam_date" class="form-control filter_date"
-                                placeholder="Select Date">
+                                placeholder="Select date">
                         </div>
 
 
+
+                        <!-- Hall -->
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Status</label>
-                            <select id="status" name="status" class="form-select">
-                                <option value="">All Status</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
+                            <label class="form-label">Hall / Room</label>
+                            <select id="classroom_id" class="form-select">
+                                <option value="">All Halls</option>
+                                @foreach ($classrooms as $room)
+                                    <option value="{{ $room->id }}">
+                                        {{ $room->room_no }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
+
+
 
                     </div>
                 </div>
@@ -218,7 +175,7 @@
 
             <div class="card mt-3">
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
-                    <h5 class="card-title">Exams</h5>
+                    <h5 class="card-title">Invigilator Allocation</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#Addmodel">
@@ -250,14 +207,14 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>Department</th>
                                 <th>Exam Name</th>
-                                <th>Exam Type</th>
-                                <th>Exam Cycle</th>
+                                <th>Department</th>
                                 <th>Exam Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Status</th>
+                                <th>Staff Code</th>
+                                <th>Staff Name</th>
+                                <th>Room No</th>
+                                <th>Building</th>
+                                <th>Floor</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -293,19 +250,17 @@
                 // endDate: new Date()
             });
 
-
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{{ route('exams') }}",
+                    url: "{{ route('invigilator_allocate') }}",
                     data: function(d) {
                         d.department_id = $('#department_id').val();
-                        d.exam_name = $('#exam_name').val();
-                        d.exam_type = $('#exam_type').val();
-                        d.exam_cycle = $('#exam_cycle').val();
+                        d.staff_id = $('#staff_id').val();
+                        d.exam_id = $('#exam_id').val();
                         d.exam_date = $('#exam_date').val();
-                        d.status = $('#status').val();
+                        d.classroom_id = $('#classroom_id').val();
                     }
                 },
 
@@ -317,26 +272,19 @@
 
                     },
                     {
+                        data: 'get_exams_details.exam_name',
+                        name: 'get_exams_details.exam_name',
+
+                    },
+                    {
                         data: 'department',
                         name: 'department',
 
                     },
 
                     {
-                        data: 'exam_name',
-                        name: 'exam_name',
-                    },
-                    {
-                        data: 'exam_type',
-                        name: 'exam_type',
-                    },
-                    {
-                        data: 'exam_cycle',
-                        name: 'exam_cycle',
-                    },
-                    {
-                        data: 'exam_date',
-                        name: 'exam_date',
+                        data: 'get_exams_details.exam_date',
+                        name: 'get_exams_details.exam_date',
                         render: function(data) {
 
                             if (!data) return '-';
@@ -350,33 +298,29 @@
                             return `${day}-${month}-${year}`;
                         }
                     },
-
                     {
-                        data: 'start_time',
-                        name: 'start_time',
-
+                        data: 'get_staff.staff_code',
+                        name: 'get_staff.staff_code',
                     },
-
                     {
-                        data: 'end_time',
-                        name: 'end_time',
+                        data: 'staff_name',
+                        name: 'staff_name',
 
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                        className: 'text-center',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row) {
+                        data: 'get_classroom.room_no',
+                        name: 'get_classroom.room_no',
 
-                            if (data == 1) {
-                                return '<span class="badge bg-success">Active</span>';
-                            } else {
-                                return '<span class="badge bg-danger">Inactive</span>';
-                            }
+                    },
+                    {
+                        data: 'get_classroom.building',
+                        name: 'get_classroom.building',
 
-                        }
+                    },
+                    {
+                        data: 'get_classroom.floor',
+                        name: 'get_classroom.floor',
+
                     },
                     {
                         data: 'actions',
@@ -393,12 +337,13 @@
             });
 
             $('#resetBtn').click(function() {
+
                 $('#department_id').val('');
-                $('#exam_name').val('');
-                $('#exam_type').val('');
-                $('#exam_cycle').val('');
+                $('#staff_id').val('');
+                $('#exam_id').val('');
                 $('#exam_date').val('');
-                $('#status').val('');
+                $('#classroom_id').val('');
+
                 table.ajax.reload();
             });
         });
@@ -407,22 +352,20 @@
             e.preventDefault();
             let type = $(this).data('type');
             let department_id = $('#department_id').val();
-            let exam_name = $('#exam_name').val();
-            let exam_type = $('#exam_type').val();
-            let exam_cycle = $('#exam_cycle').val();
+            let staff_id = $('#staff_id').val();
+            let exam_id = $('#exam_id').val();
             let exam_date = $('#exam_date').val();
-            let status = $('#status').val();
-            let url = "{{ route('exams_export') }}";
+            let classroom_id = $('#classroom_id').val();
+            let url = "{{ route('invigilator_export') }}";
 
             window.location.href =
                 url +
                 '?type=' + type +
                 '&department_id=' + encodeURIComponent(department_id) +
-                '&exam_name=' + encodeURIComponent(exam_name) +
-                '&exam_type=' + encodeURIComponent(exam_type) +
-                '&exam_cycle=' + encodeURIComponent(exam_cycle) +
+                '&staff_id=' + encodeURIComponent(staff_id) +
+                '&exam_id=' + encodeURIComponent(exam_id) +
                 '&exam_date=' + encodeURIComponent(exam_date) +
-                '&status=' + encodeURIComponent(status);
+                '&classroom_id=' + encodeURIComponent(classroom_id) ;
 
         });
     </script>
