@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\ExamsExport;
 use App\Exports\Admin\ExamsTemplateExport;
 use App\Imports\Admin\ExamsImport;
 use App\Models\Department;

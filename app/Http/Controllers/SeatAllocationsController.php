@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\SeatAllocationExport;
 use App\Exports\Admin\SeatAllocationTemplateExport;
 use App\Imports\Admin\SeatAllocationImport;
 use App\Models\Classroom;
 use App\Models\Department;
 use App\Models\Exams;
 use App\Models\SeatAllocations;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;

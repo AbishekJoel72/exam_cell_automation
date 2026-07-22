@@ -30,7 +30,7 @@ class ExamsExport implements FromView, WithEvents
             AfterSheet::class => function ($event) {
                 $event->sheet->insertNewRowBefore(1, 1);
 
-                $event->sheet->setCellValue('A1', 'Faculties List');
+                $event->sheet->setCellValue('A1', 'Exams List');
                 $event->sheet->mergeCells('A1:I1');
                 $event->sheet->getStyle('A1')->applyFromArray([
                     'font' => [

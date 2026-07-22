@@ -30,8 +30,8 @@ class invigilatorAllocationExport implements FromView, WithEvents
             AfterSheet::class => function ($event) {
                 $event->sheet->insertNewRowBefore(1, 1);
 
-                $event->sheet->setCellValue('A1', 'Faculties List');
-                $event->sheet->mergeCells('A1:J1');
+                $event->sheet->setCellValue('A1', 'Invigilator Allocation List');
+                $event->sheet->mergeCells('A1:I1');
                 $event->sheet->getStyle('A1')->applyFromArray([
                     'font' => [
                         'bold' => true,
@@ -44,14 +44,14 @@ class invigilatorAllocationExport implements FromView, WithEvents
                 ]);
 
                 $lastRow = count($this->invigilatorAllocation) + 2;
-                $event->sheet->getStyle('A2:J2')->getFont()->setBold(true);
+                $event->sheet->getStyle('A2:I2')->getFont()->setBold(true);
 
-                $event->sheet->getStyle('A2:J'.$lastRow)
+                $event->sheet->getStyle('A2:I'.$lastRow)
                     ->getBorders()
                     ->getAllBorders()
                     ->setBorderStyle(Border::BORDER_THIN);
 
-                foreach (range('A', 'J') as $column) {
+                foreach (range('A', 'I') as $column) {
                     $event->sheet->getDelegate()
                         ->getColumnDimension($column)
                         ->setAutoSize(true);

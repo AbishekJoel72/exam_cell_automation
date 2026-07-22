@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\invigilatorAllocationExport;
 use App\Exports\Admin\InvigilatorAllocationTemplateExport;
 use App\Imports\Admin\InvigilatorAllocationImport;
 use App\Models\Classroom;
