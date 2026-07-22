@@ -318,10 +318,10 @@
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
                     <h5 class="card-title">Student</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger">
+                        <a href="javascript:void(0)" id="createCredentials" class="btn btn-sm btn-danger">
                             Create Credentials
                         </a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                        <a href="javascript:void(0)" id="downloadCredentials" class="btn btn-sm btn-dark">
                             Download Credentials
                         </a>
 
@@ -651,6 +651,48 @@
                 '&academic_year=' + encodeURIComponent(academic_year) +
                 '&register_no=' + encodeURIComponent(register_no);
 
+        });
+
+
+        $(document).on('click', '#createCredentials', function() {
+            $.ajax({
+                url: "{{ route('student_credentials') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    action: "create_credentials",
+                    department_id: $('#department_id').val(),
+                    course_id: $('#course_id').val(),
+                    semester: $('#semester').val(),
+                    section: $('#section').val(),
+                    academic_year: $('#academic_year').val(),
+                    register_no: $('#register_no').val(),
+                },
+                success: function(response) {
+                    $('#modalMessage').text(response.message);
+                    let modal = new bootstrap.Modal(document.getElementById('sessionModal'));
+                    modal.show();
+                },
+                error: function(xhr) {
+                    $('#modalMessage').text(xhr.responseJSON.message);
+                    let modal = new bootstrap.Modal(document.getElementById('sessionModal'));
+                    modal.show();
+                }
+            });
+        });
+
+
+        $(document).on('click', '#downloadCredentials', function() {
+            let url = "{{ route('student_credentials') }}";
+            window.location.href =
+                url +
+                '?action=download_credentials' +
+                '&department_id=' + encodeURIComponent($('#department_id').val()) +
+                '&course_id=' + encodeURIComponent($('#course_id').val()) +
+                '&semester=' + encodeURIComponent($('#semester').val()) +
+                '&section=' + encodeURIComponent($('#section').val()) +
+                '&academic_year=' + encodeURIComponent($('#academic_year').val()) +
+                '&register_no=' + encodeURIComponent($('#register_no').val());
         });
     </script>
 @endsection

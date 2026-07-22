@@ -13,15 +13,12 @@
                         <input type="hidden" name="action" value="download">
                         <div class="d-flex gap-4 flex-wrap">
                             <div class="row">
-                                <!--Select All Columns -->
                                 <div class="col-md-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="selectAllFields">
                                         <label class="form-check-label" for="selectAllFields">Select All Fields</label>
                                     </div>
                                 </div>
-
-                                <!--Department -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -29,8 +26,6 @@
                                         <label class="form-check-label" for="chkDeptCode">Department</label>
                                     </div>
                                 </div>
-
-                                <!--Course Code -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -38,8 +33,6 @@
                                         <label class="form-check-label" for="chkCourseCode">Course Code</label>
                                     </div>
                                 </div>
-
-                                <!--Course Name -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -47,8 +40,6 @@
                                         <label class="form-check-label" for="chkCourseName">Course Name</label>
                                     </div>
                                 </div>
-
-                                <!-- Duration -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -112,9 +103,7 @@
                                     <option value="{{ $code->course_code }}">{{ $code->course_code }}</option>
                                 @endforeach
                             </select>
-
                         </div>
-
                         <div class="col-md-4 mb-3">
                             <label for="course_name" class="form-label mb-1"> Course Name </label>
                             <select name="course_name" id="course_name" class="form-select ">
@@ -123,20 +112,16 @@
                                     <option value="{{ $code->course_name }}">{{ $code->course_name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
-
                     <button type="button" class="btn btn-primary" id="filterBtn">
                         <i class="fa-solid fa-filter"></i> Show Filter
                     </button>
-
                     <button type="reset" class="btn btn-secondary" id="resetBtn">
                         <i class="fa-solid fa-rotate-right"></i> Reset
                     </button>
-
                 </div>
             </div>
 
@@ -193,12 +178,10 @@
         <div class="modal fade" id="Addmodel" tabindex="-1" aria-labelledby="AddmodelLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-top">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title">Add Course</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <form action="{{ route('course') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
                         @csrf
@@ -206,7 +189,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                    <label for="add_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span></label>
                                     <select name="department_code" id="add_department_code" class="form-select" required>
                                         <option value="" selected disabled>All Department Code</option>
@@ -216,33 +199,29 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span
+                                    <label for="add_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_course_code" name="course_code"
                                         placeholder="Enter Course Code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_name" class="form-label">Course Name <span
+                                    <label for="add_course_name" class="form-label mb-1">Course Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_course_name" name="course_name"
                                         placeholder="Enter Course Name" required>
                                 </div>
-
                                 <div class="mb-3 col-md-6">
-                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span>
+                                    <label for="add_duration" class="form-label mb-1">Duration <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="add_duration" name="duration"
                                         placeholder="Enter Duration" required>
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-footer d-flex justify-content-center">
-
                             <button type="submit" class="btn btn-primary px-4">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Submit
                             </button>
-
                         </div>
                     </form>
                 </div>
@@ -252,12 +231,10 @@
         <div class="modal fade" id="Editmodel" tabindex="-1" aria-labelledby="EditmodelLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-top">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Course</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <form action="{{ route('course') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
                         @csrf
@@ -266,7 +243,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                    <label for="edit_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <select name="department_code" id="edit_department_code" class="form-select"
                                         required>
@@ -277,33 +254,29 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span
+                                    <label for="edit_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_course_code" name="course_code"
                                         placeholder="Enter Course Code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="course_name" class="form-label">Course Name <span
+                                    <label for="edit_course_name" class="form-label mb-1">Course Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_course_name" name="course_name"
                                         placeholder="Enter Course Name" required>
                                 </div>
-
                                 <div class="mb-3 col-md-6">
-                                    <label for="duration" class="form-label">Duration <span class="text-danger">*</span>
+                                    <label for="edit_duration" class="form-label mb-1">Duration <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_duration" name="duration"
                                         placeholder="Enter Duration" required>
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-footer d-flex justify-content-center">
-
                             <button type="submit" class="btn btn-primary px-4">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
-
                         </div>
                     </form>
                 </div>
@@ -314,31 +287,24 @@
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-top">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Status</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <form action="{{ route('course') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
                         @csrf
                         <input type="hidden" name="edit_status" value="true">
                         <input type="hidden" id="edit_status_id" name="id">
-
                         <div class="modal-body">
                             <div class="row">
                                 <div class="mb-3 col-md-12">
                                     <label class="form-label d-block fw-bold">Status</label>
-
-                                    <!-- Active Radio Button -->
                                     <div class="form-check form-check-inline mt-2">
                                         <input type="radio" class="form-check-input" id="edit_active" value="1"
                                             name="status">
                                         <label for="edit_active" class="form-check-label ">Active</label>
                                     </div>
-
-                                    <!-- Inactive Radio Button -->
                                     <div class="form-check form-check-inline mt-2">
                                         <input type="radio" class="form-check-input" id="edit_inactive" value="0"
                                             name="status">
@@ -347,7 +313,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary px-4">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
@@ -357,8 +322,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
     @include('layout.include.footer')
 @endsection

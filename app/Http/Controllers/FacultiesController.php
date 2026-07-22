@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Exports\Admin\FacultiesExport;
 use App\Exports\Admin\FacultiesTemplateExport;
+use App\Exports\Admin\FacultyCredentialsExport;
 use App\Imports\Admin\FacultiesImport;
 use App\Models\Department;
 use App\Models\Faculties;
+use App\Models\Registration;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -34,27 +37,27 @@ class FacultiesController extends Controller
                         'experience' => 'required',
                     ]);
                     if ($validation) {
-                        if($request->id){
+                        if ($request->id) {
                             Faculties::where('id', $request->id)
-                            ->update([
-                                'department_id' =>$request->department_id,
-                                'staff_code' =>$request->staff_code,
-                                'first_name' =>$request->first_name,
-                                'last_name' =>$request->last_name,
-                                'gender' =>$request->gender,
-                                'dob' => Carbon::createFromFormat('d-m-Y', $request->dob) ->format('Y-m-d'),
-                                'phone' =>$request->phone,
-                                'email' =>$request->email,
-                                'designation' =>$request->designation,
-                                'qualification' =>$request->qualification,
-                                'experience' =>$request->experience,
+                                ->update([
+                                    'department_id' => $request->department_id,
+                                    'staff_code' => $request->staff_code,
+                                    'first_name' => $request->first_name,
+                                    'last_name' => $request->last_name,
+                                    'gender' => $request->gender,
+                                    'dob' => Carbon::createFromFormat('d-m-Y', $request->dob)->format('Y-m-d'),
+                                    'phone' => $request->phone,
+                                    'email' => $request->email,
+                                    'designation' => $request->designation,
+                                    'qualification' => $request->qualification,
+                                    'experience' => $request->experience,
 
-                            ]);
+                                ]);
                             session()->flash('success', 'Update Added Successfully');
 
                             return redirect()->route('faculty');
 
-                        }else {
+                        } else {
 
                             $faculties = new Faculties;
                             $faculties->department_id = $request->department_id;
@@ -62,7 +65,7 @@ class FacultiesController extends Controller
                             $faculties->first_name = $request->first_name;
                             $faculties->last_name = $request->last_name;
                             $faculties->gender = $request->gender;
-                            $faculties->dob = Carbon::createFromFormat('d-m-Y', $request->dob) ->format('Y-m-d');
+                            $faculties->dob = Carbon::createFromFormat('d-m-Y', $request->dob)->format('Y-m-d');
                             $faculties->phone = $request->phone;
                             $faculties->email = $request->email;
                             $faculties->designation = $request->designation;
@@ -83,8 +86,8 @@ class FacultiesController extends Controller
             }
         }
 
-        if($request->method() == "GET"){
-            if($request->get_faculty_data){
+        if ($request->method() == 'GET') {
+            if ($request->get_faculty_data) {
                 $id = decrypt($request->id);
                 $this->data['faculties_values'] = Faculties::where('id', $id)->first();
             }
@@ -97,7 +100,7 @@ class FacultiesController extends Controller
     public function faculty(Request $request)
     {
 
-     if ($request->method() == 'POST') {
+        if ($request->method() == 'POST') {
             if ($request->edit_status) {
                 try {
                     $validation = $request->validate([
@@ -122,20 +125,19 @@ class FacultiesController extends Controller
             }
         }
 
-         if ($request->get_status) {
-                $id = $request->id;
-                $status = Faculties::where('id', $id)->first();
+        if ($request->get_status) {
+            $id = $request->id;
+            $status = Faculties::where('id', $id)->first();
 
-                return response()->json($status);
-            }
+            return response()->json($status);
+        }
 
-            if ($request->get_delete) {
-                $id = $request->id;
-                $delete = Faculties::where('id', $id)->delete();
+        if ($request->get_delete) {
+            $id = $request->id;
+            $delete = Faculties::where('id', $id)->delete();
 
-                return response()->json($delete);
-            }
-
+            return response()->json($delete);
+        }
 
         if ($request->ajax()) {
             $faculty = Faculties::with('get_department');
@@ -321,5 +323,92 @@ class FacultiesController extends Controller
 
             return $pdf->download('faculties.pdf');
         }
+    }
+
+    public function faculty_credentials(Request $request)
+    {
+        if ($request->action == 'create_credentials') {
+
+            $faculty = Faculties::query();
+            if ($request->department_id) {
+                $faculty->where('department_id', $request->department_id);
+            }
+
+            if ($request->staff_code) {
+                $faculty->where('staff_code', $request->staff_code);
+            }
+
+            if ($request->faculty_name) {
+                $faculty->whereRaw(
+                    "CONCAT(first_name,' ',last_name) LIKE ?",
+                    ['%'.$request->faculty_name.'%']
+                );
+            }
+
+            if ($request->designation) {
+                $faculty->where('designation', $request->designation);
+            }
+
+            if ($request->qualification) {
+                $faculty->where('qualification', $request->qualification);
+            }
+
+            if ($request->status != '') {
+                $faculty->where('status', $request->status);
+            }
+
+            $faculty = $faculty->get();
+
+            $created = 0;
+            $skipped = 0;
+
+            foreach ($faculty as $row) {
+
+                // Required Fields
+                if (
+                    empty($row->staff_code) ||
+                    empty($row->email) ||
+                    empty($row->phone)
+                ) {
+                    $skipped++;
+
+                    continue;
+                }
+
+                // Already Exists
+                $exists = Registration::where('username', $row->staff_code)
+                    ->exists();
+
+                if ($exists) {
+                    $skipped++;
+
+                    continue;
+                }
+
+                Registration::create([
+                    'username' => $row->staff_code,
+                    'name' => $row->first_name.' '.$row->last_name,
+                    'email' => $row->email,
+                    'phone' => $row->phone,
+                    'password' => Hash::make($row->staff_code),
+                    'role' => 'faculty',
+                    'status' => 1,
+                ]);
+
+                $created++;
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => "$created Credentials Created Successfully. $skipped Skipped.",
+            ]);
+        }
+
+        if ($request->action == 'download_credentials') {
+
+            return Excel::download(new FacultyCredentialsExport($request), 'Faculty_Login_Details.xlsx');
+
+        }
+
     }
 }

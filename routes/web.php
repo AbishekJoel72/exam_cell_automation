@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SeatAllocationsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectsController;
+use App\Http\Controllers\ViewHallTickerController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\FacultyMiddleware;
 use App\Http\Middleware\StudentMiddleware;
@@ -47,9 +48,11 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
     Route::any('classroom_export',[ClassroomController::class,'ClassRoomDataExport'])->name('classroom_export');
     Route::any('students',[StudentController::class,'students'])->name('students');
     Route::any('add_student',[StudentController::class,'Addstudents'])->name('add_student');
+    Route::any('student_credentials', [StudentController::class, 'student_credentials'])->name('student_credentials');
     Route::any('student_excel_upload',[StudentController::class,'studentsexcelUpload'])->name('student_excel_upload');
     Route::any('student_export',[StudentController::class,'StudentDataExport'])->name('student_export');
     Route::any('faculty',[FacultiesController::class,'faculty'])->name('faculty');
+    Route::any('faculty_credentials',[FacultiesController::class,'faculty_credentials'])->name('faculty_credentials');
     Route::any('add_faculties',[FacultiesController::class,'AddFaculties'])->name('add_faculties');
     Route::any('faculties_excel_upload',[FacultiesController::class,'facultyexcelUpload'])->name('faculties_excel_upload');
     Route::any('faculty_export',[FacultiesController::class,'FacultyDataExport'])->name('faculty_export');
@@ -70,5 +73,6 @@ Route::middleware([FacultyMiddleware::class])->prefix('faculty')->group(function
 
 Route::middleware([StudentMiddleware::class])->prefix('student')->group(function () {
 
+Route::any('view_hall_ticker', [ViewHallTickerController::class, 'ViewHallTicket'])->name('view_hall_ticker');
 });
 

@@ -24,7 +24,6 @@ class LoginController extends Controller
                                 ->orWhere('username', $request->username)
                                 ->orWhere('phone', $request->username);
                         })->first();
-
                         if ($user && Hash::check($request->password, $user->password)) {
                             $request->session()->put([
                                 'id' => $user->id,
@@ -48,7 +47,7 @@ class LoginController extends Controller
                             } else {
                                 session()->flash('success', 'Login successful as Student.');
 
-                                return redirect()->route('dashboard');
+                                return redirect()->route('view_hall_ticker');
                             }
                         } else {
                             session()->flash('error', 'Enter the field correctly');

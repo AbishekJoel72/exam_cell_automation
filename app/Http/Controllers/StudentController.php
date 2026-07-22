@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Admin\StudentCredentialsExport;
 use App\Exports\Admin\StudentExport;
 use App\Exports\Admin\StudentTemplateExport;
 use App\Imports\Admin\StudentImport;
 use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\Department;
+use App\Models\Registration;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -353,6 +356,76 @@ class StudentController extends Controller
             $pdf = Pdf::loadView('Export.pdf.student_pdf', ['student' => $student]);
 
             return $pdf->download('student.pdf');
+        }
+    }
+
+    public function student_credentials(Request $request)
+    {
+        if ($request->action == 'create_credentials') {
+            $students = Student::query();
+            if (! empty($request->department_id)) {
+                $students->where('department_id', $request->department_id);
+            }
+            if (! empty($request->course_id)) {
+                $students->where('course_id', $request->course_id);
+            }
+            if (! empty($request->semester)) {
+                $students->where('semester', $request->semester);
+            }
+            if (! empty($request->section)) {
+                $students->where('section', $request->section);
+            }
+            if (! empty($request->academic_year)) {
+                $students->where('academic_year', $request->academic_year);
+            }
+            if (! empty($request->register_no)) {
+                $students->where('register_no', $request->register_no);
+            }
+
+            $students = $students->get();
+            $created = 0;
+            $exists = 0;
+            $invalid = 0;
+
+            foreach ($students as $student) {
+                if (empty($student->register_no) || empty($student->email) || empty($student->phone)) {
+                    $invalid++;
+
+                    continue;
+                }
+                $check = Registration::where('username', $student->register_no)
+                    ->where('role', 'student')
+                    ->exists();
+
+                if ($check) {
+                    $exists++;
+
+                    continue;
+                }
+                $registration = new Registration;
+                $registration->username = $student->register_no;
+                $registration->name = $student->first_name.' '.$student->last_name;
+                $registration->email = $student->email;
+                $registration->phone = $student->phone;
+                $registration->password = Hash::make($student->register_no);
+                $registration->role = 'student';
+                $registration->save();
+                $created++;
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Credentials Created Successfully.
+                    Created : '.$created.'
+                    Already Exists : '.$exists.'
+                    Invalid Students : '.$invalid,
+            ]);
+        }
+
+        if ($request->action == 'download_credentials') {
+
+            return Excel::download(new StudentCredentialsExport($request), 'Student_Credentials.xlsx');
+
         }
     }
 }

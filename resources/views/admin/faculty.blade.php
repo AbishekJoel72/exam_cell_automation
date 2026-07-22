@@ -272,10 +272,10 @@
                 <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
                     <h5 class="card-title">Faculty</h5>
                     <div class="d-flex align-items-center gap-2 ms-auto">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger">
+                        <a href="javascript:void(0)" id="createCredentials" class="btn btn-sm btn-danger">
                             Create Credentials
                         </a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                        <a href="javascript:void(0)" id="downloadCredentials" class="btn btn-sm btn-dark">
                             Download Credentials
                         </a>
 
@@ -581,6 +581,54 @@
                 '&designation=' + encodeURIComponent(designation) +
                 '&qualification=' + encodeURIComponent(qualification) +
                 '&status=' + encodeURIComponent(status);
+
+        });
+
+
+        $(document).on('click', '#createCredentials', function() {
+            $.ajax({
+                url: "{{ route('faculty_credentials') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    action: "create_credentials",
+                    department_id: $('#department_id').val(),
+                    staff_code: $('#staff_code').val(),
+                    faculty_name: $('#faculty_name').val(),
+                    designation: $('#designation').val(),
+                    qualification: $('#qualification').val(),
+                    status: $('#status').val()
+                },
+                success: function(response) {
+                    $('#modalMessage').text(response.message);
+                    var modal = new bootstrap.Modal(
+                        document.getElementById('sessionModal')
+                    );
+                    modal.show();
+                },
+                error: function(xhr) {
+                    $('#modalMessage').text(xhr.responseJSON.message);
+                    var modal = new bootstrap.Modal(
+                        document.getElementById('sessionModal')
+                    );
+                    modal.show();
+                }
+            });
+        });
+
+        $(document).on('click', '#downloadCredentials', function() {
+
+            let url = "{{ route('faculty_credentials') }}";
+
+            window.location.href =
+                url +
+                '?action=download_credentials' +
+                '&department_id=' + encodeURIComponent($('#department_id').val()) +
+                '&staff_code=' + encodeURIComponent($('#staff_code').val()) +
+                '&faculty_name=' + encodeURIComponent($('#faculty_name').val()) +
+                '&designation=' + encodeURIComponent($('#designation').val()) +
+                '&qualification=' + encodeURIComponent($('#qualification').val()) +
+                '&status=' + encodeURIComponent($('#status').val());
 
         });
     </script>

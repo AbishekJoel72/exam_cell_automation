@@ -126,8 +126,8 @@
 
                 {{-- 3. STUDENT MENU --}}
             @else
-                <li>
-                    <a href="#">
+                <li class="{{ Request::routeIs('view_hall_ticker') ? 'active' : '' }}">
+                    <a href="{{ route('view_hall_ticker') }}">
                         <i class="fa-solid fa-id-card me-2"></i>
                         <span class="sidebar-text">View Hall Ticket</span>
                     </a>

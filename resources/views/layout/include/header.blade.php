@@ -7,21 +7,18 @@
     </div>
 
     <nav class="ms-auto bg-light text-primary p-3">
-        @php
-            use App\Models\Registration;
-            $reg = Registration::where('role', 'admin')->first();
-        @endphp
+
 
         <div class="dropdown">
-            <div class="d-flex flex-column align-items-start" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
-                @if (isset($reg))
-                    @if ($reg->role == 'admin')
-                        <span><i class="fa fa-user"></i> {{ $reg->name }}</span>
-                        <span><i class="fa fa-envelope"></i> {{ $reg->email }}</span>
-                    @else
-                        <span><i class="fa fa-user-tag"></i> {{ $reg->username }}</span>
-                        <span><i class="fa fa-user"></i> {{ $reg->name }}</span>
-                    @endif
+            <div class="d-flex flex-column align-items-start" id="adminDropdown" data-bs-toggle="dropdown"
+                aria-expanded="false" style="cursor:pointer;">
+
+                @if (session('role') == 'admin')
+                    <span><i class="fa fa-user"></i> {{ session('name') }}</span>
+                    <span><i class="fa fa-envelope"></i> {{ session('email') }}</span>
+                @else
+                    <span><i class="fa fa-user-tag"></i> {{ session('username') }}</span>
+                    <span><i class="fa fa-user"></i> {{ session('name') }}</span>
                 @endif
             </div>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
