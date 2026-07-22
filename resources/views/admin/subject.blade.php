@@ -201,23 +201,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Department </th>
-                                <th>Course</th>
-                                <th>Semester</th>
-                                <th>Subject Code</th>
-                                <th>Subject Name</th>
-                                <th>Credits</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+               <div class="card-body table-body">
+                 <div class="table-responsive">
+                     <table id="datatable" class="table table-bordered">
+                         <thead>
+                             <tr>
+                                 <th>S.No</th>
+                                 <th>Department </th>
+                                 <th>Course</th>
+                                 <th>Semester</th>
+                                 <th>Subject Code</th>
+                                 <th>Subject Name</th>
+                                 <th>Credits</th>
+                                 <th>Status</th>
+                                 <th>Actions</th>
+                             </tr>
+                         </thead>
+                         <tbody></tbody>
+                     </table>
+                 </div>
                 </div>
             </div>
         @endif

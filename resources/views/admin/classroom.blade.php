@@ -182,20 +182,22 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Room No </th>
-                                <th>Building</th>
-                                <th>Floor</th>
-                                <th>Total Seats</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                     <div class="card-body table-body">
+                         <table id="datatable" class="table table-bordered">
+                             <thead>
+                                 <tr>
+                                     <th>S.No</th>
+                                     <th>Room No </th>
+                                     <th>Building</th>
+                                     <th>Floor</th>
+                                     <th>Total Seats</th>
+                                     <th>Status</th>
+                                     <th>Actions</th>
+                                 </tr>
+                             </thead>
+                             <tbody></tbody>
+                         </table>
+                     </div>
                 </div>
             </div>
         @endif

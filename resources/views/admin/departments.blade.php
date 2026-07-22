@@ -14,21 +14,24 @@
                         <input type="hidden" name="action" value="download">
                         <div class="d-flex gap-4 flex-wrap">
                             <div class="row">
+                                <!--Select All Columns -->
                                 <div class="col-md-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="selectAllFields">
                                         <label class="form-check-label" for="selectAllFields">Select All Fields</label>
                                     </div>
-
                                 </div>
+
+                                <!-- Department Code -->
                                 <div class="col-md-6 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
                                             value="department_code" id="chkCode">
                                         <label class="form-check-label" for="chkCode"> Department Code</label>
                                     </div>
-
                                 </div>
+
+                                <!-- Department Name -->
                                 <div class="col-md-6 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -36,7 +39,6 @@
                                         <label class="form-check-label" for="chkName"> Department Name</label>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </form>
@@ -73,6 +75,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <!--Department Code Filter -->
                         <div class="col-md-6 mb-3">
                             <label for="department_code" class="form-label mb-1"> Department Code </label>
                             <select name="department_code" id="department_code" class="form-select ">
@@ -81,8 +84,9 @@
                                     <option value="{{ $code->department_code }}">{{ $code->department_code }}</option>
                                 @endforeach
                             </select>
-
                         </div>
+
+                        <!--Department Name Filter -->
                         <div class="col-md-6 mb-3">
                             <label for="department_name" class="form-label mb-1"> Department Name </label>
                             <select name="department_name" id="department_name" class="form-select ">
@@ -91,7 +95,6 @@
                                     <option value="{{ $name->department_name }}">{{ $name->department_name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
                     </div>
                 </div>
@@ -137,19 +140,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Department Code</th>
-                                <th>Department Name</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Department Code</th>
+                                    <th>Department Name</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif
@@ -169,14 +174,17 @@
                         <input type="hidden" name="add_department" value="true">
                         <div class="modal-body">
                             <div class="row">
+                                <!-- Add Department Code -->
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                    <label for="department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
+
+                                <!-- Add Department Name -->
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name <span
+                                    <label for="department_name" class="form-label mb-1">Department Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_name"
                                         name="department_name" placeholder="Enter department name" required>
@@ -212,14 +220,17 @@
                         <input type="hidden" id="edit_department_id" name="id">
                         <div class="modal-body">
                             <div class="row">
+                                <!-- Edit Department Code  -->
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                    <label for="department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_code"
                                         name="department_code" placeholder="Enter department code" required>
                                 </div>
+
+                                <!-- Edit Department Name -->
                                 <div class="mb-3 col-md-6">
-                                    <label for="department_name" class="form-label">Department Name <span
+                                    <label for="department_name" class="form-label mb-1">Department Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_name"
                                         name="department_name" placeholder="Enter department name" required>
@@ -294,8 +305,6 @@
 @section('script')
     @include('layout.datatable')
     <script>
-    
-
         // DataTable
         $(document).ready(function() {
             $('#selectAllFields').change(function() {

@@ -1,5 +1,3 @@
-
-
 body {
     margin: 0;
     background: #e3e2e2;
@@ -16,12 +14,15 @@ body {
     bottom: 0;
     width: 270px;
     color: #fff;
-    padding: 20px 20px 0 20px; /* Bottom padding-a text block-uku mathiyachu */
+    padding: 20px 20px 0 20px;
+    /* Bottom padding-a text block-uku mathiyachu */
     transition: width 0.3s ease;
     z-index: 1100;
     display: flex;
-    flex-direction: column; /* Content-a vertical-a break panna */
-    overflow: hidden; /* Sidebar full-a scroll aagatha padi block panniyachu */
+    flex-direction: column;
+    /* Content-a vertical-a break panna */
+    overflow: hidden;
+    /* Sidebar full-a scroll aagatha padi block panniyachu */
 }
 
 /* 1. Sidebar menu list mattum scroll aaguvatharkaana main fix */
@@ -29,13 +30,18 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow-y: auto; /* List-ku mattum scroll enable panniyachu */
-    flex-grow: 1; /* Meedhi irukara full space-aiyum list yeduthukum */
-    padding-bottom: 20px; /* Keel mudiyum pothu konjam gap irikka */
+    overflow-y: auto;
+    /* List-ku mattum scroll enable panniyachu */
+    flex-grow: 1;
+    /* Meedhi irukara full space-aiyum list yeduthukum */
+    padding-bottom: 20px;
+    /* Keel mudiyum pothu konjam gap irikka */
 
     /* Scrollbar icon-a hide panna */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE & Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE & Edge */
 }
 
 /* Chrome, Safari-la scrollbar hide panna */
@@ -288,26 +294,40 @@ textarea {
 /* ------------------------------------------------- DataTable--------------------------------------------
   ----------------------------------------------------------------------------------------------------------
   ----------------------------------------------------------------------------------------------------------------------*/
+.table-body {
+    overflow: hidden;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
 #datatable {
     width: 100% !important;
-    border-collapse: collapse !important;
-    font-size: 14px;
-    background: #ffffff;
     margin-top: 12px;
-
+    border-collapse: collapse !important;
 }
 
 #datatable thead th {
     background: #fff;
     padding: 10px 12px;
-    border: 1px solid #5a5f68;
-    white-space: nowrap;
+    font-weight: 600;
+    text-align: center;
 }
 
 #datatable tbody td {
     padding: 5px 12px;
-    border: 1px solid #5a5f68;
     vertical-align: middle;
+}
+
+#datatable thead th,
+#datatable tbody td {
+    padding: 8px 10px !important;
+    font-size: 13px;
+    white-space: nowrap !important;
+    border: 1px solid #000 !important;
+    box-sizing: border-box;
 }
 
 .dataTables_wrapper .dataTables_filter,
@@ -318,6 +338,7 @@ textarea {
 .dataTables_wrapper .row:first-child {
     margin-bottom: 10px;
 }
+
 
 
 /* ------------------------------------------------- select2 --------------------------------------------

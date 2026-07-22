@@ -127,7 +127,7 @@
                             <select id="exam_id" name="exam_id" class="form-select">
                                 <option value="">All Exams</option>
                                 @foreach ($exams as $exam)
-                                    <option value="{{ $exam->exam_name  }}">
+                                    <option value="{{ $exam->exam_name }}">
                                         {{ $exam->exam_name }}
                                     </option>
                                 @endforeach
@@ -202,24 +202,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Exam Name</th>
-                                <th>Department</th>
-                                <th>Exam Date</th>
-                                <th>Staff Code</th>
-                                <th>Staff Name</th>
-                                <th>Room No</th>
-                                <th>Building</th>
-                                <th>Floor</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Exam Name</th>
+                                    <th>Department</th>
+                                    <th>Exam Date</th>
+                                    <th>Staff Code</th>
+                                    <th>Staff Name</th>
+                                    <th>Room No</th>
+                                    <th>Building</th>
+                                    <th>Floor</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif
@@ -365,7 +367,7 @@
                 '&staff_id=' + encodeURIComponent(staff_id) +
                 '&exam_id=' + encodeURIComponent(exam_id) +
                 '&exam_date=' + encodeURIComponent(exam_date) +
-                '&classroom_id=' + encodeURIComponent(classroom_id) ;
+                '&classroom_id=' + encodeURIComponent(classroom_id);
 
         });
     </script>

@@ -8,14 +8,135 @@ use App\Imports\Admin\FacultiesImport;
 use App\Models\Department;
 use App\Models\Faculties;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class FacultiesController extends Controller
 {
+    public function AddFaculties(Request $request)
+    {
+        if ($request->method() == 'POST') {
+            if ($request->add_faculties) {
+                try {
+                    $validation = $request->validate([
+                        'department_id' => 'required',
+                        'staff_code' => 'required',
+                        'first_name' => 'required',
+                        'last_name' => 'required',
+                        'gender' => 'required',
+                        'dob' => 'required',
+                        'phone' => 'required',
+                        'email' => 'required',
+                        'designation' => 'required',
+                        'qualification' => 'required',
+                        'experience' => 'required',
+                    ]);
+                    if ($validation) {
+                        if($request->id){
+                            Faculties::where('id', $request->id)
+                            ->update([
+                                'department_id' =>$request->department_id,
+                                'staff_code' =>$request->staff_code,
+                                'first_name' =>$request->first_name,
+                                'last_name' =>$request->last_name,
+                                'gender' =>$request->gender,
+                                'dob' => Carbon::createFromFormat('d-m-Y', $request->dob) ->format('Y-m-d'),
+                                'phone' =>$request->phone,
+                                'email' =>$request->email,
+                                'designation' =>$request->designation,
+                                'qualification' =>$request->qualification,
+                                'experience' =>$request->experience,
+
+                            ]);
+                            session()->flash('success', 'Update Added Successfully');
+
+                            return redirect()->route('faculty');
+
+                        }else {
+
+                            $faculties = new Faculties;
+                            $faculties->department_id = $request->department_id;
+                            $faculties->staff_code = $request->staff_code;
+                            $faculties->first_name = $request->first_name;
+                            $faculties->last_name = $request->last_name;
+                            $faculties->gender = $request->gender;
+                            $faculties->dob = Carbon::createFromFormat('d-m-Y', $request->dob) ->format('Y-m-d');
+                            $faculties->phone = $request->phone;
+                            $faculties->email = $request->email;
+                            $faculties->designation = $request->designation;
+                            $faculties->qualification = $request->qualification;
+                            $faculties->experience = $request->experience;
+                            $faculties->save();
+                            session()->flash('success', 'Faculties Added Successfully');
+
+                            return redirect()->route('faculty');
+                        }
+
+                    }
+                } catch (\Throwable $th) {
+                    session()->flash('success', $th->getMessage());
+
+                    return redirect()->back();
+                }
+            }
+        }
+
+        if($request->method() == "GET"){
+            if($request->get_faculty_data){
+                $id = decrypt($request->id);
+                $this->data['faculties_values'] = Faculties::where('id', $id)->first();
+            }
+        }
+        $this->data['dept'] = Department::get();
+
+        return view('admin.add_faculties')->with($this->data);
+    }
+
     public function faculty(Request $request)
     {
+
+     if ($request->method() == 'POST') {
+            if ($request->edit_status) {
+                try {
+                    $validation = $request->validate([
+                        'status' => 'required',
+                    ]);
+                    if ($validation) {
+                        if ($request->id) {
+                            Faculties::where('id', $request->id)
+                                ->update([
+                                    'status' => $request->status,
+                                ]);
+                            session()->flash('success', 'Status Updated Successfully');
+
+                            return redirect()->route('faculty');
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    session()->flash('error', $e->getMessage());
+
+                    return redirect()->back();
+                }
+            }
+        }
+
+         if ($request->get_status) {
+                $id = $request->id;
+                $status = Faculties::where('id', $id)->first();
+
+                return response()->json($status);
+            }
+
+            if ($request->get_delete) {
+                $id = $request->id;
+                $delete = Faculties::where('id', $id)->delete();
+
+                return response()->json($delete);
+            }
+
+
         if ($request->ajax()) {
             $faculty = Faculties::with('get_department');
 
@@ -62,7 +183,7 @@ class FacultiesController extends Controller
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="javascript:void(0)"  class="editRow dropdown-item" data-id="'.$row->id.'">Edit</a>
+                                    <a href="'.route('add_faculties', ['id' => encrypt($row->id), 'get_faculty_data' => true]).'"  class=" dropdown-item">Edit</a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)"  class="editStatusRow dropdown-item" data-id="'.$row->id.'">Status</a>
@@ -160,35 +281,35 @@ class FacultiesController extends Controller
 
     public function FacultyDataExport(Request $request)
     {
-         $type = $request->type;
+        $type = $request->type;
         $query = Faculties::with('get_department');
 
         if ($request->filled('department_id')) {
-                $query->where('department_id', $request->department_id);
-            }
+            $query->where('department_id', $request->department_id);
+        }
 
-            if ($request->filled('staff_code')) {
-                $query->where('staff_code', 'like', '%'.$request->staff_code.'%');
-            }
+        if ($request->filled('staff_code')) {
+            $query->where('staff_code', 'like', '%'.$request->staff_code.'%');
+        }
 
-            if ($request->filled('faculty_name')) {
-                $query->where(function ($q) use ($request) {
-                    $q->where('first_name', 'like', '%'.$request->faculty_name.'%')
-                        ->orWhere('last_name', 'like', '%'.$request->faculty_name.'%');
-                });
-            }
+        if ($request->filled('faculty_name')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('first_name', 'like', '%'.$request->faculty_name.'%')
+                    ->orWhere('last_name', 'like', '%'.$request->faculty_name.'%');
+            });
+        }
 
-            if ($request->filled('designation')) {
-                $query->where('designation', $request->designation);
-            }
+        if ($request->filled('designation')) {
+            $query->where('designation', $request->designation);
+        }
 
-            if ($request->filled('qualification')) {
-                $query->where('qualification', $request->qualification);
-            }
+        if ($request->filled('qualification')) {
+            $query->where('qualification', $request->qualification);
+        }
 
-            if ($request->filled('status')) {
-                $query->where('status', $request->status);
-            }
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
 
         $faculties = $query->get();
         if ($request->type == 'excel') {

@@ -219,25 +219,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Exam Name</th>
-                                <th>Department</th>
-                                <th>Exam Date</th>
-                                <th>Register No</th>
-                                <th>Student Name</th>
-                                <th>Room No</th>
-                                <th>Seat No</th>
-                                <th>Row No</th>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Exam Name</th>
+                                    <th>Department</th>
+                                    <th>Exam Date</th>
+                                    <th>Register No</th>
+                                    <th>Student Name</th>
+                                    <th>Room No</th>
+                                    <th>Seat No</th>
+                                    <th>Row No</th>
 
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif

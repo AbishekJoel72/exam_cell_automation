@@ -279,8 +279,7 @@
                             Download Credentials
                         </a>
 
-                        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#Addmodel">
+                        <a href="{{ route('add_faculties') }}" class="btn btn-sm btn-primary">
                             <i class="fa-solid fa-plus"></i> Add New
                         </a>
 
@@ -304,28 +303,79 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Staff Code </th>
-                                <th>Faculty Name </th>
-                                <th>Department</th>
-                                <th>Designation</th>
-                                <th>Qualification</th>
-                                <th>Experience</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Staff Code </th>
+                                    <th>Faculty Name </th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Qualification</th>
+                                    <th>Experience</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif
+
+        <div class="modal fade" id="Editstatusmodel" tabindex="-1" aria-labelledby="EditstatusmodelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Status</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('faculty') }}" method="POST" autocomplete="off" class="needs-validation"
+                        novalidate>
+                        @csrf
+                        <input type="hidden" name="edit_status" value="true">
+                        <input type="hidden" id="edit_status_id" name="id">
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label d-block fw-bold">Status</label>
+
+                                    <!-- Active Radio Button -->
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input type="radio" class="form-check-input" id="edit_active" value="1"
+                                            name="status">
+                                        <label for="edit_active" class="form-check-label ">Active</label>
+                                    </div>
+
+                                    <!-- Inactive Radio Button -->
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input type="radio" class="form-check-input" id="edit_inactive" value="0"
+                                            name="status">
+                                        <label for="edit_inactive" class="form-check-label">In Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa-solid fa-paper-plane me-2"></i> Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
     @include('layout.include.footer')
 @endsection
@@ -445,6 +495,70 @@
                 $('#status').val('');
                 table.ajax.reload();
             });
+        });
+
+        $(document).on('click', '.editStatusRow', function() {
+            let id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('faculty') }}",
+                type: 'GET',
+                data: {
+                    id: id,
+                    get_status: true
+                },
+                dataType: 'json',
+                success: function(response) {
+
+                    $('#edit_status_id').val(response.id);
+                    if (response.status == 1) {
+                        $('#edit_active').prop('checked', true);
+                    } else {
+                        $('#edit_inactive').prop('checked', true);
+                    }
+
+                    $('#Editstatusmodel').modal('show');
+                },
+                error: function() {
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
+
+        $(document).on('click', '.deleteRow', function() {
+            let id = $(this).data('id');
+            showConfirm(messages.delete_confirm, function() {
+                $.ajax({
+                    url: "{{ route('faculty') }}",
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        get_delete: true
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#modalMessage').text("Delete Successfully");
+                        var modal = new bootstrap.Modal(document
+                            .getElementById(
+                                'sessionModal'));
+                        modal.show();
+                        $('#sessionModal').on('hidden.bs.modal',
+                            function() {
+                                $('#datatable').DataTable().ajax
+                                    .reload();
+                            });
+                    },
+                    error: function() {
+                        $("#modalMessage").text(
+                            "Something went wrong!");
+                        var modal = new bootstrap.Modal(document
+                            .getElementById(
+                                'sessionModal'));
+                        modal.show();
+                    }
+                });
+            });
+
         });
 
         $(document).on('click', '.exportBtn', function(e) {

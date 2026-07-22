@@ -13,6 +13,7 @@
                         <input type="hidden" name="action" value="download">
                         <div class="d-flex gap-4 flex-wrap">
                             <div class="row">
+                                <!--Select All Columns -->
                                 <div class="col-md-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="selectAllFields">
@@ -20,6 +21,7 @@
                                     </div>
                                 </div>
 
+                                <!--Department -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -28,6 +30,7 @@
                                     </div>
                                 </div>
 
+                                <!--Course Code -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -36,6 +39,7 @@
                                     </div>
                                 </div>
 
+                                <!--Course Name -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -44,7 +48,7 @@
                                     </div>
                                 </div>
 
-                                <!-- 💡 ADDED DURATION CHECKBOX -->
+                                <!-- Duration -->
                                 <div class="col-md-3 mt-2">
                                     <div class="form-check">
                                         <input class="form-check-input field-checkbox" type="checkbox" name="fields[]"
@@ -165,21 +169,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>S.No</th>
-                                <th>Department </th>
-                                <th>Course Course</th>
-                                <th>Course Name</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Department </th>
+                                    <th>Course Course</th>
+                                    <th>Course Name</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif
@@ -550,8 +556,8 @@
             window.location.href =
                 url +
                 '?type=' + type +
-                '&department_code=' + encodeURIComponent(department_code)+
-                '&course_code=' + encodeURIComponent(course_code)+
+                '&department_code=' + encodeURIComponent(department_code) +
+                '&course_code=' + encodeURIComponent(course_code) +
                 '&course_name=' + encodeURIComponent(course_name);
 
         });
