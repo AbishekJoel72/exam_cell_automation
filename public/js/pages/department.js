@@ -3,54 +3,58 @@ const departmentRules = {
     department_code: {
         required: true,
         alphaNumeric: true,
+        min: 2,
+        max: 20,
         messages: {
             required: "Field is required.",
-            alphaNumeric: "AlphaNumerice allowed.",
+            alphaNumeric: "Only Letters and numbers are allowed.",
+            min: "Minimum 2 characters required.",
+            max: "Maximum 20 characters allowed."
         }
     },
 
     department_name: {
         required: true,
         alphabet: true,
+        min: 3,
+        max: 100,
         messages: {
             required: "Field is required.",
-            alphabet: "Alphabets are allowed.",
+            alphabet: "Only Alphabets are allowed.",
+            min: "Minimum 3 characters required.",
+            max: "Maximum 100 characters allowed."
         }
     }
 
 };
+
 $(function () {
 
-    // Add Form
-    $('#Addmodel form').on('submit', function (e) {
+    // Submit
+    $('#Addmodel form, #Editmodel form').on('submit', function (e) {
 
-        let valid = InlineValidator.validate(this, departmentRules);
+        let isValid = true;
 
-        if (!valid) {
+        $(this).find('.form-control').each(function () {
+
+            if (!InlineValidator.validateField($(this), departmentRules)) {
+                isValid = false;
+            }
+
+        });
+
+        if (!isValid) {
             e.preventDefault();
             return false;
         }
 
     });
-    // Edit Form
-    $('#Editmodel form').on('submit', function (e) {
 
-        let valid = InlineValidator.validate(this, departmentRules);
+    // Live Validation (Current input only)
+    $(document).on('keyup blur', '.form-control', function () {
 
-        if (!valid) {
-            e.preventDefault();
-            return false;
-        }
+        InlineValidator.validateField($(this), departmentRules);
 
-    });
-
-    // Remove error while typing
-    $(document).on('keyup change', '.form-control', function () {
-        $(this)
-            .removeClass('is-invalid')
-            .closest('.form-field')
-            .find('.text-errors')
-            .text('');
     });
 
 });

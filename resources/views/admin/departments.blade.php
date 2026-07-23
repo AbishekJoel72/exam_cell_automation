@@ -159,7 +159,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('department') }}" method="POST" autocomplete="off" class="needs-validation"
-                        novalidate>
+                        data-custom-validation="true" novalidate>
                         @csrf
                         <input type="hidden" name="add_department" value="true">
                         <div class="modal-body">
@@ -181,7 +181,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="insert_confirm" name="add_department">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Submit
                             </button>
                         </div>
@@ -198,7 +199,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('department') }}" method="POST" autocomplete="off" class="needs-validation"
-                        novalidate>
+                        data-custom-validation="true" novalidate>
                         @csrf
                         <input type="hidden" name="edit_department" value="true">
                         <input type="hidden" id="edit_department_id" name="id">
@@ -261,7 +262,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -411,7 +413,7 @@
 
         $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            showConfirm(messages.delete_confirm, function() {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('department') }}",
                     type: 'GET',
@@ -420,30 +422,63 @@
                         get_delete: true
                     },
                     dataType: 'json',
-                    success: function(data) {
-                        $('#modalMessage').text("Delete Successfully");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
-                        $('#sessionModal').on('hidden.bs.modal',
-                            function() {
-                                $('#datatable').DataTable().ajax
-                                    .reload();
-                            });
+                    success: function(response) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px'
+                        }).then(() => {
+                            $('#datatable').DataTable().ajax.reload(null, false);
+                        });
                     },
-                    error: function() {
-                        $("#modalMessage").text(
-                            "Something went wrong!");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
+
+                    error: function(xhr) {
+                        let message = "Something went wrong!";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Error',
+                            text: message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px'
+                        });
                     }
                 });
             });
-
         });
+
+        $(document).on('submit', '#Addmodel form', function(e) {
+            e.preventDefault();
+            let form = this;
+
+            $.ajax({
+                url: "{{ route('department') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    department_code: $('#add_department_code').val(),
+                    department_name: $('#add_department_name').val(),
+                    check_exists: true
+                },
+                success: function(response) {
+
+                    if (response.status) {
+                        form.submit();
+                    } else {
+                        $('#modalMessage').text(response.message);
+                        let modal = new bootstrap.Modal(document.getElementById('sessionModal'));
+                        modal.show();
+                    }
+                }
+            });
+        });
+
 
         $(document).on('click', '.exportBtn', function(e) {
             e.preventDefault();

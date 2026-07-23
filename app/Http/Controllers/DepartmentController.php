@@ -16,6 +16,41 @@ class DepartmentController extends Controller
     public function department(Request $request)
     {
         if ($request->method() == 'POST') {
+
+            if ($request->check_exists) {
+
+                if (! empty($request->department_code)) {
+
+                    $departmentcode = Department::where('department_code', $request->department_code)->exists();
+
+                    if ($departmentcode) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Department Code already exists.',
+                        ]);
+                    }
+                }
+
+                if (! empty($request->department_name)) {
+
+                    $departmentname = Department::where('department_name', $request->department_name)->exists();
+
+                    if ($departmentname) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Department Name already exists.',
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'exists' => false,
+                ]);
+            }
+
             if ($request->add_department) {
                 try {
                     $validation = $request->validate([
@@ -106,12 +141,21 @@ class DepartmentController extends Controller
             }
 
             if ($request->get_delete) {
-                $id = $request->id;
-                $delete = Department::where('id', $id)->delete();
 
-                return response()->json($delete);
+                $delete = Department::where('id', $request->id)->delete();
+
+                if ($delete) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Department deleted successfully.',
+                    ]);
+                }
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Delete failed.',
+                ]);
             }
-
             $departments = Department::query();
             if ($request->has('department_code') && ! empty($request->department_code)) {
                 $departments->where('department_code', $request->department_code);

@@ -8,7 +8,6 @@
     <main class="main-container">
         @yield('content')
     </main>
-    @include('layout.include.modal')
     @include('layout.include.script')
     @yield('script')
 </body>
