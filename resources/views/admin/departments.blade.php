@@ -164,17 +164,19 @@
                         <input type="hidden" name="add_department" value="true">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="add_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_code"
                                         name="department_code" placeholder="Enter department code" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="add_department_name" class="form-label mb-1">Department Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_department_name"
                                         name="department_name" placeholder="Enter department name" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
@@ -202,17 +204,19 @@
                         <input type="hidden" id="edit_department_id" name="id">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="edit_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_code"
                                         name="department_code" placeholder="Enter department code" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="edit_department_name" class="form-label mb-1">Department Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_department_name"
                                         name="department_name" placeholder="Enter department name" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
@@ -270,6 +274,8 @@
 @endsection
 @section('script')
     @include('layout.datatable')
+    <script src="{{ asset('js/pages/inline_validation.js') }}"></script>
+    <script src="{{ asset('js/pages/department.js') }}"></script>
     <script>
         // DataTable
         $(document).ready(function() {

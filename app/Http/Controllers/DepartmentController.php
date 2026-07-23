@@ -59,7 +59,7 @@ class DepartmentController extends Controller
                     }
 
                 } catch (\Throwable $th) {
-                    session()->flash('error', $e->getMessage());
+                    session()->flash('error', $th->getMessage());
 
                     return redirect()->back();
                 }
@@ -82,7 +82,7 @@ class DepartmentController extends Controller
                         }
                     }
                 } catch (\Throwable $th) {
-                    session()->flash('error', $e->getMessage());
+                    session()->flash('error', $th->getMessage());
 
                     return redirect()->back();
                 }
