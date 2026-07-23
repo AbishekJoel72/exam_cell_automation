@@ -182,7 +182,7 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary px-4 confirmSubmit"
-                                data-message="insert_confirm" name="add_department">
+                                data-message="insert_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Submit
                             </button>
                         </div>
@@ -221,8 +221,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                        <div class="modal-footer d-flex justify-content-center ">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -263,7 +264,7 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary px-4 confirmSubmit"
-                                data-message="update_confirm">
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -423,16 +424,18 @@
                     },
                     dataType: 'json',
                     success: function(response) {
+                        $('#datatable').DataTable().ajax.reload(null, false);
                         Swal.fire({
                             title: 'Success',
                             text: response.message,
                             confirmButtonText: 'OK',
                             confirmButtonColor: '#0d6efd',
                             allowOutsideClick: false,
-                            width: '350px'
-                        }).then(() => {
-                            $('#datatable').DataTable().ajax.reload(null, false);
-                        });
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        })
                     },
 
                     error: function(xhr) {
@@ -446,7 +449,10 @@
                             confirmButtonText: 'OK',
                             confirmButtonColor: '#0d6efd',
                             allowOutsideClick: false,
-                            width: '350px'
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
                         });
                     }
                 });
@@ -468,13 +474,25 @@
                 },
                 success: function(response) {
 
-                    if (response.status) {
-                        form.submit();
-                    } else {
-                        $('#modalMessage').text(response.message);
-                        let modal = new bootstrap.Modal(document.getElementById('sessionModal'));
-                        modal.show();
+                     if (response.status) {
+
+                form.submit();
+
+            } else {
+
+                Swal.fire({
+                    title: 'Error',
+                    text: response.message,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#0d6efd',
+                    allowOutsideClick: false,
+                    width: '350px',
+                    customClass: {
+                        title: 'session-title',
                     }
+                });
+
+            }
                 }
             });
         });

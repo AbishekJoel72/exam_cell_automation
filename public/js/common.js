@@ -57,7 +57,7 @@ function confirmAction(message, callback) {
         customClass: {
             popup: 'custom-popup',
             title: 'custom-title',      // Center title
-            htmlContainer: 'custom-message', // Center message
+            htmlContainer: 'customs-message', // Center message
             confirmButton: 'btn btn-primary custom-btn me-2',
             cancelButton: 'btn btn-secondary custom-btn'
         },

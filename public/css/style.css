@@ -381,10 +381,6 @@ textarea {
     font-size:14px !important;
 }
 
-.swal2-title{
-    text-align:left !important;
-    margin-bottom:10px !important;
-}
 
 .custom-title{
     text-align: center !important;
@@ -398,12 +394,8 @@ textarea {
     font-size: 14px !important;
 }
 
-.custom-text{
-    text-align: center !important;
-    font-size: 14px !important;
-}
 
-.swal2-popup .session-title{
+.session-title{
     width: 100% !important;
     text-align: center !important;
     margin: 0 auto 10px auto !important;

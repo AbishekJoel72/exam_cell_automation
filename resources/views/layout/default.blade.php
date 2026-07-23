@@ -9,6 +9,7 @@
         @yield('content')
     </main>
     @include('layout.include.script')
+    @include('layout.include.session')
     @yield('script')
 </body>
 
