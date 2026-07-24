@@ -35,12 +35,12 @@ const courseRules = {
 
     duration: {
         required: true,
-        number: true,
+        alphaNumeric: true,
         min: 1,
         max: 20,
         messages: {
             required: "Field is required.",
-            number: "Only  Numbers are allowed.",
+            alphaNumeric: "Only Letters and Numbers are allowed.",
             min: "Minimum 1 character required.",
             max: "Maximum 20 characters allowed."
         }
