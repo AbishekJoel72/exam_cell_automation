@@ -83,12 +83,11 @@ const InlineValidator = {
             return false;
         }
 
-        // Alpha Numeric (Special characters not allowed)
-        if (rule.alphaNumeric && !/^[A-Za-z0-9]+$/.test(value)) {
+        // Alpha Numeric (Special characters not allowed, Space allowed)
+        if (rule.alphaNumeric && !/^[A-Za-z0-9 ]+$/.test(value)) {
             this.error(input, rule.messages.alphaNumeric);
             return false;
         }
-
         // Username
         if (rule.username && !/^[A-Za-z][A-Za-z0-9_]{3,20}$/.test(value)) {
             this.error(input, rule.messages.username);
@@ -110,11 +109,11 @@ const InlineValidator = {
     error(input, message) {
 
         input.removeClass('is-valid')
-             .addClass('is-invalid');
+            .addClass('is-invalid');
 
         input.closest('.form-field')
-             .find('.text-errors')
-             .text(message);
+            .find('.text-errors')
+            .text(message);
     }
 
 };

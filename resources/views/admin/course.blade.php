@@ -188,39 +188,43 @@
                         <input type="hidden" name="add_course" value="true">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="add_department_code" class="form-label mb-1">Department Code <span
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label for="add_department_code" class="form-label mb-1">Department <span
                                             class="text-danger">*</span></label>
                                     <select name="department_code" id="add_department_code" class="form-select" required>
                                         <option value="" selected disabled>All Department Code</option>
                                         @foreach ($departmentcode as $code)
-                                            <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                            <option value="{{ $code->id }}">{{ $code->department_code }} -
+                                                {{ $code->department_name }}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="add_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_course_code" name="course_code"
                                         placeholder="Enter Course Code" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="add_course_name" class="form-label mb-1">Course Name <span
-                                            class="text-danger">*</span> </label>
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label class="form-label mb-1">Course Name <span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="add_course_name" name="course_name"
                                         placeholder="Enter Course Name" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="add_duration" class="form-label mb-1">Duration <span class="text-danger">*</span>
-                                    </label>
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label for="add_duration" class="form-label mb-1">Duration <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="add_duration" name="duration"
                                         placeholder="Enter Duration" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="fa-solid fa-paper-plane me-2"></i> Submit
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="insert_confirm">
+                                <i class="fa-solid fa-paper-plane me-2 "></i> Submit
                             </button>
                         </div>
                     </form>
@@ -242,7 +246,7 @@
                         <input type="hidden" id="edit_course_id" name="id">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="edit_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span> </label>
                                     <select name="department_code" id="edit_department_code" class="form-select"
@@ -252,29 +256,35 @@
                                             <option value="{{ $code->id }}">{{ $code->department_code }}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="edit_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_course_code" name="course_code"
                                         placeholder="Enter Course Code" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
+                                <div class="mb-3 col-md-6 form-field">
                                     <label for="edit_course_name" class="form-label mb-1">Course Name <span
                                             class="text-danger">*</span> </label>
                                     <input type="text" class="form-control" id="edit_course_name" name="course_name"
                                         placeholder="Enter Course Name" required>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="edit_duration" class="form-label mb-1">Duration <span class="text-danger">*</span>
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label for="edit_duration" class="form-label mb-1">Duration <span
+                                            class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_duration" name="duration"
                                         placeholder="Enter Duration" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -314,7 +324,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -327,6 +338,8 @@
 @endsection
 @section('script')
     @include('layout.datatable')
+    <script src="{{ asset('js/pages/inline_validation.js') }}"></script>
+    <script src="{{ asset('js/pages/course.js') }}"></script>
     <script>
         $(document).ready(function() {
 
@@ -474,7 +487,7 @@
 
         $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            showConfirm(messages.delete_confirm, function() {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('course') }}",
                     type: 'GET',
@@ -483,29 +496,80 @@
                         get_delete: true,
                     },
                     dataType: 'json',
-                    success: function(data) {
-                        $('#modalMessage').text("Delete Successfully");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
-                        $('#sessionModal').on('hidden.bs.modal',
-                            function() {
-                                $('#datatable').DataTable().ajax
-                                    .reload();
-                            });
+                    success: function(response) {
+                        $('#datatable').DataTable().ajax.reload(null, false);
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        })
                     },
-                    error: function() {
-                        $("#modalMessage").text(
-                            "Something went wrong!");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
+
+                    error: function(xhr) {
+                        let message = "Something went wrong!";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Error',
+                            text: message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
                     }
                 });
             });
 
+        });
+
+        $(document).on('submit', '#Addmodel form', function(e) {
+            e.preventDefault();
+            let form = this;
+
+            $.ajax({
+                url: "{{ route('course') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    department_code: $('#add_department_code').val(),
+                    course_code: $('#add_course_code').val(),
+                    course_name: $('#add_course_name').val(),
+                    check_exists: true
+                },
+                success: function(response) {
+
+                    if (response.status) {
+
+                        form.submit();
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
+
+                    }
+                }
+            });
         });
 
         $(document).on('click', '.exportBtn', function(e) {

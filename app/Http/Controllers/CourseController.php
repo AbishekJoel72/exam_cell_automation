@@ -17,6 +17,45 @@ class CourseController extends Controller
     public function course(Request $request)
     {
         if ($request->method() == 'POST') {
+
+            if ($request->check_exists) {
+
+                if (! empty($request->course_code)) {
+
+                    $courseCode = Course::where('department_id', $request->department_code)
+                        ->where('course_code', $request->course_code)
+                        ->exists();
+
+                    if ($courseCode) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Course Code already exists.',
+                        ]);
+                    }
+                }
+
+                if (! empty($request->course_name)) {
+
+                    $courseName = Course::where('department_id', $request->department_code)
+                        ->where('course_name', $request->course_name)
+                        ->exists();
+
+                    if ($courseName) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Course Name already exists.',
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'exists' => false,
+                ]);
+            }
+
             if ($request->add_course) {
                 try {
                     $validation = $request->validate([
@@ -114,10 +153,20 @@ class CourseController extends Controller
             }
 
             if ($request->get_delete) {
-                $id = $request->id;
-                $delete = Course::where('id', $id)->delete();
 
-                return response()->json($delete);
+                $delete = Course::where('id', $request->id)->delete();
+
+                if ($delete) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Course deleted successfully.',
+                    ]);
+                }
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Delete failed.',
+                ]);
             }
 
             $courses = Course::with('get_department');

@@ -474,25 +474,25 @@
                 },
                 success: function(response) {
 
-                     if (response.status) {
+                    if (response.status) {
 
-                form.submit();
+                        form.submit();
 
-            } else {
+                    } else {
 
-                Swal.fire({
-                    title: 'Error',
-                    text: response.message,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#0d6efd',
-                    allowOutsideClick: false,
-                    width: '350px',
-                    customClass: {
-                        title: 'session-title',
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
+
                     }
-                });
-
-            }
                 }
             });
         });
