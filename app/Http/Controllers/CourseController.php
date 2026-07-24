@@ -171,17 +171,14 @@ class CourseController extends Controller
 
             $courses = Course::with('get_department');
 
-            if ($request->filled('department_code')) {
-                $courses->where('department_id', $request->department_code);
+            if ($request->filled('department')) {
+                $courses->where('department_id', $request->department);
             }
 
-            if ($request->filled('course_code')) {
-                $courses->where('id', $request->course_code);
+            if ($request->filled('course')) {
+                $courses->where('id', $request->course);
             }
 
-            if ($request->filled('course_name')) {
-                $courses->where('id', $request->course_name);
-            }
 
             return DataTables::of($courses)
                 ->addIndexColumn()
@@ -213,9 +210,8 @@ class CourseController extends Controller
         }
 
         $this->data['courses'] = Course::get();
-        $this->data['departmentcode'] = Department::get();
-        $this->data['coursecode'] = Course::get();
-        $this->data['coursename'] = Course::get();
+        $this->data['departmentdata'] = Department::get();
+        $this->data['coursedata'] = Course::get();
 
         return view('admin.course')->with($this->data);
     }
@@ -265,16 +261,15 @@ class CourseController extends Controller
     {
         $type = $request->type;
         $query = Course::with('get_department');
-        if ($request->filled('department_code')) {
-            $query->where('department_id', $request->department_code);
+
+        if ($request->filled('department')) {
+            $query->where('department_id', $request->department);
         }
 
-        if ($request->filled('course_code')) {
-            $query->where('course_code', $request->course_code);
+        if ($request->filled('course')) {
+            $query->where('id', $request->course);
         }
-        if ($request->filled('course_name')) {
-            $query->where('course_name', $request->course_name);
-        }
+
 
         $courses = $query->get();
         if ($request->type == 'excel') {

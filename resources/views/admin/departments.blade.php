@@ -70,24 +70,16 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="department_code" class="form-label mb-1"> Department Code </label>
-                            <select name="department_code" id="department_code" class="form-select ">
+                        <div class="col-md-12 mb-3">
+                            <label for="department" class="form-label mb-1"> Department  </label>
+                            <select name="department" id="department" class="form-select ">
                                 <option value="">All Department Code</option>
-                                @foreach ($departmentcode as $code)
-                                    <option value="{{ $code->department_code }}">{{ $code->department_code }}</option>
+                                @foreach ($departmentdata as $code)
+                                    <option value="{{ $code->id }}">{{ $code->department_code }} - {{  $code->department_name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="department_name" class="form-label mb-1"> Department Name </label>
-                            <select name="department_name" id="department_name" class="form-select ">
-                                <option value="">All Department Name</option>
-                                @foreach ($departmentname as $name)
-                                    <option value="{{ $name->department_name }}">{{ $name->department_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
@@ -300,8 +292,7 @@
                 ajax: {
                     url: "{{ route('department') }}",
                     data: function(d) {
-                        d.department_code = $('#department_code').val();
-                        d.department_name = $('#department_name').val();
+                        d.department = $('#department').val();
                     }
                 },
 
@@ -353,8 +344,7 @@
             });
 
             $('#resetBtn').click(function() {
-                $('#department_code').val('');
-                $('#department_name').val('');
+                $('#department').val('');
                 table.ajax.reload();
             });
 
@@ -502,15 +492,13 @@
             e.preventDefault();
 
             let type = $(this).data('type');
-            let department_code = $('#department_code').val();
-            let department_name = $('#department_name').val();
+            let department = $('#department').val();
             let url = "{{ route('department_export') }}";
 
             window.location.href =
                 url +
                 '?type=' + type +
-                '&department_code=' + encodeURIComponent(department_code) +
-                '&department_name=' + encodeURIComponent(department_name);
+                '&department=' + encodeURIComponent(department);
         });
     </script>
 @endsection

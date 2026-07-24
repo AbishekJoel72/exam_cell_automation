@@ -140,33 +140,44 @@ class SubjectsController extends Controller
             }
 
             if ($request->get_delete) {
-                $id = $request->id;
-                $delete = Subjects::where('id', $id)->delete();
+                $delete = Subjects::where('id', $request->id)->delete();
 
-                return response()->json($delete);
+                if ($delete) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Course deleted successfully.',
+                    ]);
+                }
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Delete failed.',
+                ]);
             }
 
             $subjects = Subjects::with('get_department', 'get_courses');
 
+            if ($request->filled('department')) {
+                $subjects->where('department_id', $request->department);
+            }
+            if ($request->filled('course')) {
+                $subjects->where('course_id', $request->course);
+            }
             if ($request->filled('semester')) {
                 $subjects->where('semester', $request->semester);
             }
 
-            if ($request->filled('subject_code')) {
-                $subjects->where('subject_code', $request->subject_code);
-            }
-
-            if ($request->filled('subject_name')) {
-                $subjects->where('subject_name', $request->subject_name);
+            if ($request->filled('subject')) {
+                $subjects->where('id', $request->subject);
             }
 
             return DataTables::of($subjects)
                 ->addIndexColumn()
-                ->addColumn('department', function($row){
-                    return $row->get_department->department_code. ' - '. $row->get_department->department_name;
+                ->addColumn('department', function ($row) {
+                    return $row->get_department->department_code.' - '.$row->get_department->department_name;
                 })
-                ->addColumn('courses', function($row){
-                    return $row->get_courses->course_code. ' - '. $row->get_courses->course_name;
+                ->addColumn('courses', function ($row) {
+                    return $row->get_courses->course_code.' - '.$row->get_courses->course_name;
                 })
                 ->addColumn('actions', function ($row) {
                     return '
@@ -193,11 +204,10 @@ class SubjectsController extends Controller
         }
 
         $this->data['subject'] = Subjects::get();
-        $this->data['subjectcode'] = Subjects::get();
-        $this->data['subjectname'] = Subjects::get();
-        $this->data['semester'] = Subjects::select('semester')->distinct()->orderBy('semester', 'asc')->get();
-        $this->data['departmentcode'] = Department::get();
-        $this->data['coursecode'] = Course::get();
+        $this->data['departmentdata'] = Department::get();
+        $this->data['coursedata'] = Course::get();
+        $this->data['semesterdata'] = Subjects::select('semester')->distinct()->orderBy('semester', 'asc')->get();
+        $this->data['subjectdata'] = Subjects::get();
 
         return view('admin.subject')->with($this->data);
     }
@@ -252,15 +262,21 @@ class SubjectsController extends Controller
     {
         $type = $request->type;
         $query = Subjects::with('get_department', 'get_courses');
+
+        if ($request->filled('department')) {
+            $query->where('department_id', $request->department);
+        }
+
+        if ($request->filled('course')) {
+            $query->where('course_id', $request->course);
+        }
+
         if ($request->filled('semester')) {
             $query->where('semester', $request->semester);
         }
 
-        if ($request->filled('subject_code')) {
-            $query->where('subject_code', $request->subject_code);
-        }
-        if ($request->filled('subject_name')) {
-            $query->where('subject_name', $request->subject_name);
+        if ($request->filled('subject')) {
+            $query->where('id', $request->subject);
         }
 
         $subjectses = $query->get();

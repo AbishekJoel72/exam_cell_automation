@@ -84,32 +84,24 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="department_code" class="form-label mb-1"> Department </label>
-                            <select name="department_code" id="department_code" class="form-select ">
+                        <div class="col-md-6 mb-3">
+                            <label for="department" class="form-label mb-1"> Department </label>
+                            <select name="department" id="department" class="form-select ">
                                 <option value="">All Department </option>
-                                @foreach ($departmentcode as $code)
+                                @foreach ($departmentdata as $code)
                                     <option value="{{ $code->id }}">{{ $code->department_code }} -
                                         {{ $code->department_name }}</option>
                                 @endforeach
                             </select>
 
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="course_code" class="form-label mb-1"> Course Code </label>
-                            <select name="course_code" id="course_code" class="form-select ">
+                        <div class="col-md-6 mb-3">
+                            <label for="course" class="form-label mb-1"> Course Code </label>
+                            <select name="course" id="course" class="form-select ">
                                 <option value="">All Course Code </option>
-                                @foreach ($coursecode as $code)
-                                    <option value="{{ $code->course_code }}">{{ $code->course_code }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="course_name" class="form-label mb-1"> Course Name </label>
-                            <select name="course_name" id="course_name" class="form-select ">
-                                <option value="">All Department Name</option>
-                                @foreach ($coursename as $code)
-                                    <option value="{{ $code->course_name }}">{{ $code->course_name }}</option>
+                                @foreach ($coursedata as $code)
+                                    <option value="{{ $code->id }}">{{ $code->course_code }} - {{ $code->course_name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -193,7 +185,7 @@
                                             class="text-danger">*</span></label>
                                     <select name="department_code" id="add_department_code" class="form-select" required>
                                         <option value="" selected disabled>All Department Code</option>
-                                        @foreach ($departmentcode as $code)
+                                        @foreach ($departmentdata as $code)
                                             <option value="{{ $code->id }}">{{ $code->department_code }} -
                                                 {{ $code->department_name }}</option>
                                         @endforeach
@@ -223,7 +215,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="insert_confirm">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="insert_confirm">
                                 <i class="fa-solid fa-paper-plane me-2 "></i> Submit
                             </button>
                         </div>
@@ -252,7 +245,7 @@
                                     <select name="department_code" id="edit_department_code" class="form-select"
                                         required>
                                         <option value="" selected disabled>All Department Code</option>
-                                        @foreach ($departmentcode as $code)
+                                        @foreach ($departmentdata as $code)
                                             <option value="{{ $code->id }}">{{ $code->department_code }}</option>
                                         @endforeach
                                     </select>
@@ -363,9 +356,9 @@
                 ajax: {
                     url: "{{ route('course') }}",
                     data: function(d) {
-                        d.department_code = $('#department_code').val();
-                        d.course_code = $('#course_code').val();
-                        d.course_name = $('#course_name').val();
+                        d.department = $('#department').val();
+                        d.course = $('#course').val();
+
                     }
                 },
                 columns: [{
@@ -422,9 +415,8 @@
             });
 
             $('#resetBtn').click(function() {
-                $('#department_code').val('');
-                $('#course_code').val('');
-                $('#course_name').val('');
+                $('#department').val('');
+                $('#course').val('');
                 table.ajax.reload();
             });
 

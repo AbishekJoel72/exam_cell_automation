@@ -104,58 +104,49 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        {{-- <div class="col-md-4 mb-3">
-                            <label for="department_code" class="form-label mb-1"> Department Code </label>
-                            <select name="department_code" id="department_code" class="form-select ">
+                        <div class="col-md-6 mb-3">
+                            <label for="department" class="form-label mb-1"> Department </label>
+                            <select name="department" id="department" class="form-select ">
                                 <option value="">All Department Code</option>
-                                @foreach ($departmentcode as $code)
-                                    <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                @foreach ($departmentdata as $code)
+                                    <option value="{{ $code->id }}">{{ $code->department_code }} -
+                                        {{ $code->department_name }}</option>
                                 @endforeach
                             </select>
 
-                        </div> --}}
-                        {{-- <div class="col-md-4 mb-3">
-                            <label for="course_code" class="form-label mb-1"> Course Code </label>
-                            <select name="course_code" id="course_code" class="form-select ">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="course" class="form-label mb-1"> Course </label>
+                            <select name="course" id="course" class="form-select ">
                                 <option value="">All Course Code </option>
-                                @foreach ($coursecode as $code)
-                                    <option value="{{ $code->id }}">{{ $code->course_code }}</option>
+                                @foreach ($coursedata as $code)
+                                    <option value="{{ $code->id }}">{{ $code->course_code }} - {{ $code->course_name }}
+                                    </option>
                                 @endforeach
                             </select>
 
-                        </div> --}}
+                        </div>
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="semester" class="form-label mb-1"> Semester</label>
                             <select name="semester" id="semester" class="form-select ">
                                 <option value="">All Semester</option>
-                                @foreach ($semester as $code)
+                                @foreach ($semesterdata as $code)
                                     <option value="{{ $code->semester }}">{{ $code->semester }}</option>
                                 @endforeach
                             </select>
 
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <label for="subject_code" class="form-label mb-1"> Subject Code </label>
-                            <select name="subject_code" id="subject_code" class="form-select ">
+                        <div class="col-md-6 mb-3">
+                            <label for="subject" class="form-label mb-1"> Subject </label>
+                            <select name="subject" id="subject" class="form-select ">
                                 <option value="">All Subject Code</option>
-                                @foreach ($subjectcode as $code)
-                                    <option value="{{ $code->subject_code }}">{{ $code->subject_code }}</option>
+                                @foreach ($subjectdata as $code)
+                                    <option value="{{ $code->id }}">{{ $code->subject_code }} -
+                                        {{ $code->subject_name }}</option>
                                 @endforeach
                             </select>
-
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label for="subject_name" class="form-label mb-1"> Subject Name </label>
-                            <select name="subject_name" id="subject_name" class="form-select ">
-                                <option value="">All Subject Name</option>
-                                @foreach ($subjectname as $code)
-                                    <option value="{{ $code->subject_code }}">{{ $code->subject_name }}</option>
-                                @endforeach
-                            </select>
-
                         </div>
                     </div>
                 </div>
@@ -201,25 +192,25 @@
                         </div>
                     </div>
                 </div>
-               <div class="card-body table-body">
-                 <div class="table-responsive">
-                     <table id="datatable" class="table table-bordered">
-                         <thead>
-                             <tr>
-                                 <th>S.No</th>
-                                 <th>Department </th>
-                                 <th>Course</th>
-                                 <th>Semester</th>
-                                 <th>Subject Code</th>
-                                 <th>Subject Name</th>
-                                 <th>Credits</th>
-                                 <th>Status</th>
-                                 <th>Actions</th>
-                             </tr>
-                         </thead>
-                         <tbody></tbody>
-                     </table>
-                 </div>
+                <div class="card-body table-body">
+                    <div class="table-responsive">
+                        <table id="datatable" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Department </th>
+                                    <th>Course</th>
+                                    <th>Semester</th>
+                                    <th>Subject Code</th>
+                                    <th>Subject Name</th>
+                                    <th>Credits</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         @endif
@@ -239,59 +230,69 @@
                         <input type="hidden" name="add_subject" value="true">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label for="add_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span></label>
                                     <select name="department_code" id="add_department_code" class="form-select" required>
                                         <option value="" selected disabled>Selete Department</option>
-                                        @foreach ($departmentcode as $code)
-                                            <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                        @foreach ($departmentdata as $code)
+                                            <option value="{{ $code->id }}">{{ $code->department_code }} -
+                                                {{ $code->department_name }}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="add_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <select name="course_code" id="add_course_code" class="form-select" required>
                                         <option value="" selected disabled>Selete Course</option>
                                     </select>
+                                    <small class="text-errors"></small>
 
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="semester" class="form-label">Semester <span class="text-danger">*</span>
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="add_semester" class="form-label mb-1">Semester <span
+                                            class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="add_semester" name="semester"
                                         placeholder="Enter Semester" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="subject_code" class="form-label">Subject Code <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="add_subject_code" class="form-label mb-1">Subject Code <span
                                             class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="add_subject_code" name="subject_code"
                                         placeholder="Enter Subject Code" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="subject_name" class="form-label">Subject Name <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="add_subject_name" class="form-label mb-1">Subject Name <span
                                             class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="add_subject_name" name="subject_name"
                                         placeholder="Enter Subject Name" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="credits" class="form-label">Credits <span class="text-danger">*</span>
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="add_credits" class="form-label mb-1">Credits <span
+                                            class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="add_credits" name="credits"
                                         placeholder="Enter Credits" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center">
 
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="insert_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Submit
                             </button>
 
@@ -317,63 +318,74 @@
                         <input type="hidden" id="edit_subject_id" name="id">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="department_code" class="form-label">Department Code <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_department_code" class="form-label mb-1">Department Code <span
                                             class="text-danger">*</span></label>
                                     <select name="department_code" id="edit_department_code" class="form-select"
                                         required>
                                         <option value="" selected disabled>Selete Department</option>
-                                        @foreach ($departmentcode as $code)
-                                            <option value="{{ $code->id }}">{{ $code->department_code }}</option>
+                                        @foreach ($departmentdata as $code)
+                                            <option value="{{ $code->id }}">{{ $code->department_code }} -
+                                                {{ $code->department_name }}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-errors"></small>
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="course_code" class="form-label">Course Code <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_course_code" class="form-label mb-1">Course Code <span
                                             class="text-danger">*</span> </label>
                                     <select name="course_code" id="edit_course_code" class="form-select" required>
                                         <option value="" selected disabled>Selete Course</option>
-                                        @foreach ($coursecode as $code)
-                                            <option value="{{ $code->id }}">{{ $code->course_code }}</option>
+                                        @foreach ($coursedata as $code)
+                                            <option value="{{ $code->id }}">{{ $code->course_code }} -
+                                                {{ $code->course_name }}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-errors"></small>
 
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="semester" class="form-label">Semester <span class="text-danger">*</span>
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_semester" class="form-label mb-1">Semester <span
+                                            class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_semester" name="semester"
                                         placeholder="Enter Semester" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="subject_code" class="form-label">Subject Code <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_subject_code" class="form-label mb-1">Subject Code <span
                                             class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_subject_code"
                                         name="subject_code" placeholder="Enter Subject Code" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="subject_name" class="form-label">Subject Name <span
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_subject_name" class="form-label mb-1">Subject Name <span
                                             class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_subject_name"
                                         name="subject_name" placeholder="Enter Subject Name" required>
+                                    <small class="text-errors"></small>
                                 </div>
 
-                                <div class="mb-3 col-md-6">
-                                    <label for="credits" class="form-label">Credits <span class="text-danger">*</span>
+                                <div class="mb-3 col-md-6  form-field">
+                                    <label for="edit_credits" class="form-label mb-1">Credits <span
+                                            class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="edit_credits" name="credits"
                                         placeholder="Enter Credits" required>
+                                    <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center">
 
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
 
@@ -422,7 +434,7 @@
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"  data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -437,6 +449,8 @@
 @endsection
 @section('script')
     @include('layout.datatable')
+    <script src="{{ asset('js/pages/inline_validation.js') }}"></script>
+    <script src="{{ asset('js/pages/subject.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#selectAllFields').change(function() {
@@ -457,9 +471,10 @@
                 ajax: {
                     url: "{{ route('subject') }}",
                     data: function(d) {
+                        d.department = $('#department').val();
+                        d.department = $('#course').val();
                         d.semester = $('#semester').val();
-                        d.subject_code = $('#subject_code').val();
-                        d.subject_name = $('#subject_name').val();
+                        d.subject = $('#subject').val();
                     }
                 },
 
@@ -529,9 +544,10 @@
             });
 
             $('#resetBtn').click(function() {
+                $('#department').val('');
+                $('#course').val('');
                 $('#semester').val('');
-                $('#subject_code').val('');
-                $('#subject_name').val('');
+                $('#subject').val('');
                 table.ajax.reload();
             });
         });
@@ -594,7 +610,7 @@
 
         $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            showConfirm(messages.delete_confirm, function() {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('subject') }}",
                     type: 'GET',
@@ -603,25 +619,36 @@
                         get_delete: true,
                     },
                     dataType: 'json',
-                    success: function(data) {
-                        $('#modalMessage').text("Delete Successfully");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
-                        $('#sessionModal').on('hidden.bs.modal',
-                            function() {
-                                $('#datatable').DataTable().ajax
-                                    .reload();
-                            });
+                    success: function(response) {
+                        $('#datatable').DataTable().ajax.reload(null, false);
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        })
                     },
-                    error: function() {
-                        $("#modalMessage").text(
-                            "Something went wrong!");
-                        var modal = new bootstrap.Modal(document
-                            .getElementById(
-                                'sessionModal'));
-                        modal.show();
+                    error: function(xhr) {
+                        let message = "Something went wrong!";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Error',
+                            text: message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
                     }
                 });
             });
@@ -660,17 +687,19 @@
         $(document).on('click', '.exportBtn', function(e) {
             e.preventDefault();
             let type = $(this).data('type');
+            let department = $('#department').val();
+            let course = $('#course').val();
             let semester = $('#semester').val();
-            let subject_code = $('#subject_code').val();
-            let subject_name = $('#subject_name').val();
+            let subject = $('#subject').val();
             let url = "{{ route('subjects_export') }}";
 
             window.location.href =
                 url +
                 '?type=' + type +
-                '&semester=' + encodeURIComponent(semester)+
-                '&subject_code=' + encodeURIComponent(subject_code)+
-                '&subject_name=' + encodeURIComponent(subject_name);
+                '&department=' + encodeURIComponent(department) +
+                '&course=' + encodeURIComponent(course) +
+                '&semester=' + encodeURIComponent(semester) +
+                '&subject=' + encodeURIComponent(subject);
 
         });
     </script>

@@ -156,13 +156,16 @@ class DepartmentController extends Controller
                     'message' => 'Delete failed.',
                 ]);
             }
-            $departments = Department::query();
-            if ($request->has('department_code') && ! empty($request->department_code)) {
-                $departments->where('department_code', $request->department_code);
-            }
 
-            if ($request->has('department_name') && ! empty($request->department_name)) {
-                $departments->where('department_name', $request->department_name);
+            $departments = Department::select([
+                'id',
+                'department_code',
+                'department_name',
+                'status',
+            ]);
+
+            if ($request->filled('department')) {
+                $departments->where('id', $request->department);
             }
 
             return DataTables::of($departments)
@@ -192,8 +195,7 @@ class DepartmentController extends Controller
         }
 
         $this->data['departments'] = Department::get();
-        $this->data['departmentcode'] = Department::get();
-        $this->data['departmentname'] = Department::get();
+        $this->data['departmentdata'] = Department::get();
 
         return view('admin.departments')->with($this->data);
     }
@@ -237,14 +239,15 @@ class DepartmentController extends Controller
     public function DepartmentDataExport(Request $request)
     {
         $type = $request->type;
-        $query = Department::query();
+        $query = Department::select([
+            'id',
+            'department_code',
+            'department_name',
+            'status',
+        ]);
 
-        if ($request->filled('department_code')) {
-            $query->where('department_code', $request->department_code);
-        }
-
-        if ($request->filled('department_name')) {
-            $query->where('department_name', $request->department_name);
+        if ($request->filled('department')) {
+            $query->where('id', $request->department);
         }
 
         $departments = $query->get();

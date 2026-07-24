@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('course_id');
-            $table->string('semester');
+            $table->integer('semester');
             $table->string('subject_code')->unique();
             $table->string('subject_name');
             $table->integer('credits');
