@@ -20,13 +20,13 @@ class SubjectsController extends Controller
         if ($request->method() == 'GET') {
             if ($request->filter_coursecode) {
 
-                $course = Course::query();
+                $course = Course::select('id', 'course_code', 'course_name');
                 if (! empty($request->department_id)) {
                     $course->where('department_id', $request->department_id);
                 }
 
                 return response()->json(
-                    $course->select('id', 'course_code')->get()
+                    $course->select('id', 'course_code', 'course_name')->get()
                 );
             }
         }
@@ -35,6 +35,46 @@ class SubjectsController extends Controller
     public function subject(Request $request)
     {
         if ($request->method() == 'POST') {
+
+            if ($request->check_exists) {
+
+                if (! empty($request->subject_code)) {
+
+                    $subjectCode = Subjects::where('course_id', $request->course_code)
+                        ->where('semester', $request->semester)
+                        ->where('subject_code', $request->subject_code)
+                        ->exists();
+
+                    if ($subjectCode) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Subject Code already exists.',
+                        ]);
+                    }
+                }
+
+                if (! empty($request->subject_name)) {
+
+                    $subjectName = Subjects::where('course_id', $request->course_code)
+                        ->where('semester', $request->semester)
+                        ->where('subject_name', $request->subject_name)
+                        ->exists();
+
+                    if ($subjectName) {
+                        return response()->json([
+                            'status' => false,
+                            'exists' => true,
+                            'message' => 'Subject Name already exists.',
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'exists' => false,
+                ]);
+            }
             if ($request->add_subject) {
                 try {
                     $validation = $request->validate([

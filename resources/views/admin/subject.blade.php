@@ -434,7 +434,8 @@
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"  data-message="update_state">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -672,7 +673,8 @@
                     $.each(response, function(key, value) {
 
                         $('#add_course_code').append(
-                            '<option value="' + value.id + '">' + value.course_code +
+                            '<option value="' + value.id + '">' +
+                            value.course_code + ' - ' + value.course_name +
                             '</option>'
                         );
 
@@ -682,6 +684,47 @@
 
             });
 
+        });
+
+        $(document).on('submit', '#Addmodel form', function(e) {
+            e.preventDefault();
+            let form = this;
+
+            $.ajax({
+                url: "{{ route('subject') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    department_code: $('#add_department_code').val(),
+                    course_code: $('#add_course_code').val(),
+                    semester: $('#add_semester').val(),
+                    subject_code: $('#add_subject_code').val(),
+                    subject_name: $('#add_subject_name').val(),
+                    check_exists: true
+                },
+                success: function(response) {
+
+                    if (response.status) {
+
+                        form.submit();
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#0d6efd',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
+
+                    }
+                }
+            });
         });
 
         $(document).on('click', '.exportBtn', function(e) {
